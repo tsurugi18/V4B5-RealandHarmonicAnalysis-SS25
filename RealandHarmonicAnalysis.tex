@@ -1,0 +1,2780 @@
+\documentclass[8pt]{article}
+\linespread{0.5} 
+\usepackage{extsizes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{ mathrsfs }
+\usepackage{ mathtools}
+\usepackage{enumerate}
+\usepackage{bbm}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\usepackage{tikz-cd} 
+\usetikzlibrary{arrows}
+\newcommand{\midarrow}{\tikz \draw[-triangle 90] (0,0) -- +(.1,0);}
+
+\newtheorem{theorem}{Theorem} [section] 
+\newtheorem{proposition}{Proposition}[section] 
+\newtheorem{definition}{Definition}[section] 
+\newtheorem{lemma}{Lemma}[section] 
+\newtheorem{notation}{Notation}[section] 
+\newtheorem{remark}{Remark}[section] 
+\newtheorem{corollary}{Corollary} [section] 
+\newtheorem{terminology}{Terminology}[section] 
+\newtheorem{example}{Example}[section] 
+
+\DeclareMathOperator{\esssup}{esssup}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\interior}{int}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Var}{Var}
+%\newcommand*{\name}[\num_arguments][default values]{{\color{#1}\Large #2}}
+\newcommand{\ztext}[1]{\text{\makebox[0pt][c]{\tiny #1}}}
+\newcommand{\norm}[1]{\Vert #1 \Vert}
+\newcommand{\ab}[1]{\vert #1 \vert}
+\newcommand{\sep}[1]{\:\vert\:}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\opNorm}[2]{\norm{#1}_{#2\to#2}}
+\newcommand{\normL}[3]{\norm{#1}_{L^{#2}(#3)}}
+\newcommand{\bN}[0]{\mathbb{N}}
+\newcommand{\bR}[0]{\mathbb{R}}
+\newcommand{\bZ}[0]{\mathbb{Z}}
+\newcommand{\bC}[0]{\mathbb{C}}
+\newcommand{\bT}[0]{\mathbb{T}}
+\newcommand{\bE}[0]{\mathbb{E}}
+\newcommand{\bP}[0]{\mathbb{P}}
+\newcommand{\cM}[0]{\mathcal{M}}
+\newcommand{\cB}[0]{\mathcal{B}}
+\newcommand{\cH}[0]{\mathcal{H}}
+\newcommand{\cC}[0]{\mathcal{C}}
+\newcommand{\cD}[0]{\mathcal{D}}
+\newcommand{\LpT}[1]{L^{#1}(\mathbb{T})}
+\newcommand{\LpRd}[2]{L^{#1}(\mathbb{R}^#2)}
+\newcommand{\fib}[1]{%
+  \mathbin{\mathop{\times}\limits_{#1}}%
+}
+\newcommand{\tens}[1]{%
+  \mathbin{\mathop{\otimes}\displaylimits_{#1}}%
+}
+
+\title{V4B5 - Real and Harmonic Analysis}
+\author{So Murata}
+\date{Summer 2025, University of Bonn}
+
+\begin{document}
+\maketitle
+
+\section{$L^p$ spaces}
+%4.7
+\subsection{Basic Measure Theory}
+\begin{notation}
+  $\bT = \{z\in\bC\sep \ab{z} = 1\}$.
+\end{notation}
+
+\begin{notation}
+  For $n\in\bZ$, $e_n:\bT\to \bC$ is 
+  \begin{equation*}
+    e_n(x) = \exp(2\pi i nx).
+  \end{equation*}
+\end{notation}
+
+\begin{definition}
+  $L^2(\bT)$ is a Hilbert space with an inner product such that for $f,g\in L^2(\bT)$,
+  \begin{equation*}
+    \langle f,g\rangle = \int_{\bT}f(x)\overline{g(x)}dx.
+  \end{equation*}
+\end{definition}
+
+\begin{definition}
+  For $f\in L^2(\bT)$, we define a map $\hat{f}:\bZ\to \bC$ such that
+  \begin{equation*}
+    \hat{f}(n)\defeq \langle f,e_n\rangle.
+  \end{equation*}
+\end{definition}
+
+\begin{definition}
+  $\cM(\bT)$ denote the set of all finite complex Borel measures on $\bT$. The $1$-norm is defined by 
+  \begin{equation*}
+    \norm{\mu}_{\cM(\bT)} = \sup_{\{I_n\}\in\mathcal{I}}\bigcup_{n}\ab{\mu(I_n)},
+  \end{equation*}
+  where $\mathcal{I}$ is the collection of sets of subsets in $\bT$ pairwise disjoint.
+\end{definition}
+
+\begin{proposition}
+  We have a map
+  \begin{equation*}
+    L^p(\bT)\ni f\mapsto f(x)dx\in\cM(\bT),
+  \end{equation*}
+  which is injective.
+\end{proposition}
+
+\begin{notation}
+  For $\mu\in\cM(\bT)$, we set,
+  \begin{equation*}
+    \hat{\mu}(n) \defeq \langle \mu,e_n\rangle = \int_0^1 \exp(-2nx\pi i)d\mu(x).
+  \end{equation*}
+\end{notation}
+
+\begin{proposition}
+  \label{proposition_1_2}
+  The collection $\{e_k\}_{k\in\bZ}$ is an orthonormal set in $L^2(\bT)$ with Lebesgue measure.
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    \langle e_j,e_k\rangle & = \int_0^1\exp(2\pi i(j-k)x)dx,\\
+    & = \begin{cases}
+      1,\quad j=k,\\
+      {\frac {\exp(2\pi i(j-k)x)} {2\pi(j-k)}}\bigg{|}_0^1 = 0,\quad j\not=k.
+    \end{cases}
+  \end{align*}
+\end{proof}
+
+\begin{definition}
+  A trigonometric polynomial is a finite linear combination of $\{e_k\}_{k\in\bZ}$.
+\end{definition}
+
+\begin{corollary}
+  Suppose $f$ is a trigonometric polynomial then we have,
+  \begin{equation*}
+    f(x) = \sum_{k\in\bZ}\hat{f}(x)e_k(x).
+  \end{equation*}
+  which is pointwise on $\bT$.
+\end{corollary}
+
+\begin{proof}
+  Follows the orthonormality from Proposition \ref{proposition_1_2}
+\end{proof}
+
+\begin{definition}
+  Let $f\in L^1(\bT)$ and $N\in\bN$, we define,
+  \begin{align*}
+    S_Nf(x) &\defeq \sum_{\substack{k\in\bZ\\ \ab{k}\leq N}}\hat{f}(k)e_k(x).
+  \end{align*}
+\end{definition}
+\begin{definition}
+  For $N\in\bN$, the Dirichlet kernel $D_N:[0,1]\to \bC$ is 
+  \begin{equation*}
+    D_N(x) =  \sum_{\substack{k\in\bZ\\ \ab{k}\leq N}}e_k(x).
+  \end{equation*}
+\end{definition}
+\begin{definition}
+  For $f,g\in L^1(\bT)$, the convolution $f\ast g$ is 
+  \begin{equation*}
+    f\ast g(x) = \int_0^1f(x-y)g(y)dy.
+  \end{equation*}
+\end{definition}
+\begin{proposition}
+  For $f\in L^1(\bT)$, 
+  \begin{equation*}
+    S_Nf = D_N\ast f.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    S_Nf(x) &= \sum_{\ab{k}\leq N}\hat{f}(k)e_k(x),\\
+    & = \sum_{\ab{k}\leq N}\int_0^1f(y)e_k(-y)dy\cdot e_k(x),\\
+    & = \int_0^1f(y)\sum_{\ab{k}\leq N}e_k(x-y)dy,\\
+    & = \int_0^1f(y)D_N(x-y).
+  \end{align*}
+\end{proof}
+
+\begin{notation}
+  $a\lesssim b$ denotes that there is a constant $C>0$ such that $a\leq Cb$.
+\end{notation}
+
+\begin{proposition}
+  \label{proposition_1_4}
+  \begin{equation*}
+    \ab{D_N(x)}\lesssim\min\left\{N,{\frac 1 x}\right\}.
+  \end{equation*}
+\end{proposition}
+\begin{proof}
+  Observe that 
+  \begin{equation*}
+    D_N = e_{-N}{\frac {1- e_{2N+1}} {1-e_1}} = {\frac {e_{N+{\frac 1 2}}-e_{-N-{\frac 1 2}}} {e_{{\frac 1 2}}-e_{-{\frac 1 2}}}} = {\frac {\sin((2N+1)\pi x)} {\sin(\pi x)}}.
+  \end{equation*}
+  Since the numerator is bounded by $1$ and $\sin(\pi x)$ is bounded by some constant multiple of ${\frac 1 {\vert x\vert}}$ around the origin where $\bT\cong \left[-{\frac 1 2},{\frac 1 2}\right]$. Also observe that 
+  \begin{equation*}
+    \vert D_N\vert \leq \sum_{\ab{k}\leq N}\ab{e_k} = N+1.
+  \end{equation*}
+\end{proof}
+
+\begin{proposition}
+  \begin{equation*}
+    (f\ast g)(x-t) = (f\ast g(\cdot-t))(x) = (f(\cdot -x)\ast)(x).
+  \end{equation*}
+   In other words, the convolution commutes with the translation.
+   \label{proposition_1_5}
+\end{proposition}
+
+\begin{proof}
+  \begin{align*}
+    (f\ast g)(x-t) & = \int_0^1f(x-y-t)g(y)dy,\\
+    & = \int_0^1 f(x-y)g(y-t)dy,\\
+    & = (f\ast g(\cdot-t))(x).
+  \end{align*}
+\end{proof}
+
+\begin{proposition}[Fubini]
+  Suppose $F\in L^1(X\times Y)$, then 
+  \begin{align*}
+    \int_Y\int_XF(x,y)dxdy = \int_X\int_YF(x,y)dydx.
+  \end{align*}
+\end{proposition}
+
+\begin{proposition}
+  Let $f,g\in L^1(\bT)$, then $f\ast g\in L^1(\bT)$.
+\end{proposition}
+\begin{align*}
+  \int_\bT\ab{f\ast g(x)}dx&\leq \int_\bT\int_\bT\ab{f(x-y)g(y)}dydx,\\
+  &\stackrel{\ztext{Fubini}}{=}\int_\bT\ab{g(y)}\int_\bT\ab{f(x-y)}dxdy,\\
+  &= \norm{f}_{L^1}\norm{g}_{L^1}.
+\end{align*}
+
+\begin{theorem}[Minkowski's Inequality]
+Let $X$ be a measure space and $1\leq p\leq\infty$. Then for any $f,g\in L^p(X)$, we have
+\begin{equation*}
+\Vert f+g\Vert_{L^p(X)}\leq \Vert f\Vert_{L^p(X)}+\Vert g\Vert_{L^p(X)}.
+\end{equation*}
+In particular $L^p(X)$ is closed under addition.
+\end{theorem}
+
+\begin{theorem}[Hölder's Inequality]
+Let $X$ be a measure space and $1\leq p,q\leq\infty$ be such that 
+\begin{equation*}
+  {\frac 1 p}+{\frac 1 q} = 1.
+\end{equation*}
+Then for any $f\in L^p(X),g\in L^q(X)$, we have
+\begin{equation*}
+\Vert fg\Vert_{L^1(X)}\leq \Vert f\Vert_{L^p(X)}\Vert g\Vert_{L^q(X)}.
+\end{equation*}
+\end{theorem}
+
+\begin{theorem}[Riesz-Thorin Interpolation]
+Let $X,Y$ be measure spaces and $T$ be a linear map between measurable functionals on $X$ to measurable functionals on $Y$. Suppose for some $p_1,q_1,p_2,q_2\in[1,\infty]$, we have,
+\begin{equation*}
+T(L^{p_1}(X))\subseteq L^{q_1}(Y),\quad T(L^{p_2}(X))\subseteq L^{q_2}(Y).
+\end{equation*}
+Then for any $\theta\in[0,1]$, set $(p,q)$ to be
+\begin{equation*}
+{\frac 1 p} = {\frac \theta {p_1}}+{\frac {1-\theta} {p_2}},\quad {\frac 1 q} = {\frac \theta {q_1}}+{\frac {1-\theta} {q_2}},
+\end{equation*}
+then 
+\begin{equation*}
+T(L^p(X))\subseteq L^q(Y).
+\end{equation*}
+In particular, 
+\begin{equation*}
+\Vert T\Vert_{L^p(X)\to L^q(Y)} \leq \Vert T\Vert^\theta_{L^{p_1}(X)\to L^{q_1}(Y)}\Vert T\Vert^{1-\theta}_{L^{p_2}(X)\to L^{q_2}(Y)}.
+\end{equation*}
+\label{riesz-thorin}
+\end{theorem}
+
+\begin{definition}
+  Let $f:X\to \bR$ be a functional on a measurable space.
+  \begin{equation*}
+    \esssup_{x\in X}f(x) \defeq \{M\in\bR\sep f(x)\leq M\text{ almost everywhere.}\}.
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}[Young's Inequality]
+  \label{theorem_young_inequality}
+  Let $f\in L^p(\bT),g\in L^q(\bT)$. Then for 
+  \begin{equation*}
+    1+{\frac 1 r} = {\frac 1 p}+{\frac 1 q},
+  \end{equation*}
+  we have,
+  \begin{equation*}
+    \norm{f\ast g}_{L^r(\bT)}\leq \norm{f}_{L^p(\bT)}\norm{g}_{L^q(\bT)}.
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  Fix $p$ and we vary $q$. 
+  \par\textbf{Case 1 : $q=1$}, therefore $r=p$. 
+  \begin{align*}
+    \norm{f\ast g}_{L^p(\bT)} & = \left\Vert\int_\bT f(x-y)g(y)dy\right\Vert_{L^p(\bT)},\\
+    & \stackrel{\ztext{Minkowski}}{\leq} \int_\bT\norm{f(x-y)g(y)}_{L^p(\bT)}dy,\\
+    & = \norm{f(x-y)}_{L^p(\bT)}\int_\bT\ab{g(y)}dy,\\
+    & = \norm{f}_{L^p(\bT)}\norm{g}_{L^1(\bT)}.
+  \end{align*}
+  \par\textbf{Case 2 : $q=p'$} where $p' = {\frac {p} {1-p}}$ so that $r=\infty$. Therefore,
+  \begin{align*}
+    \norm{f\ast g}_{L^\infty(\bT)}&=\esssup_{x\in\bT}\left\vert\int_{\bT}f(x-y)g(y)dy\right\vert,\\
+    & \stackrel{\ztext{Hölder}}{\leq}\norm{f}_{L^p(\bT)}\norm{g}_{L^q(\bT)}.
+  \end{align*}
+  \par\textbf{General Case}, for fixed $f\in L^p(\bT)$, consider the linear map 
+  \begin{equation*}
+    L^q(\bT)\ni g\stackrel{T}{\mapsto} f\ast g\in L^r(\bT).
+  \end{equation*}
+  Notice that we have that $T$ is bounded for $(r,q) = (p,1),(\infty,p')$ cases in Theorem \ref{riesz-thorin}. Furthermore, for $\theta\in[0,1]$, set
+  \begin{align*}
+    {\frac 1 q} & = \theta + (1-\theta){\frac{(p-1)}{p}} = 1-(1-\theta){\frac 1 p},\\
+    {\frac 1 r} & = \theta {\frac 1 p}.
+  \end{align*}
+  Then 
+  \begin{equation*}
+    {\frac 1 r}-{\frac 1 q} = 1-{\frac 1 p}.
+  \end{equation*}
+  Therefore, the statement is shown.
+\end{proof}
+
+\begin{definition}
+  \label{definition_1_1}
+  Let $f\in C^0(\bT)$ and $\mu\in\cM(\bT)$ then $f\ast\mu$ is defined as,
+  \begin{equation*}
+    f\ast\mu(x) = \int_{\bT}(f(x-y))d\mu(y).
+  \end{equation*}
+\end{definition}
+
+\begin{corollary}
+  \label{corollary_1_1}
+  In Definition \ref{definition_1_1}, $f\ast\mu$ is well-defined. 
+\end{corollary}
+
+\begin{proof}
+  We need to show that 
+  \begin{equation*}
+    \norm{f\ast \mu}_{L^p(\bT)} \leq \norm{f}_{L^p(\bT)}\norm{\mu}_{\cM(\bT)}.
+  \end{equation*}
+  This follows from $q=1$ case in THeorem \ref{theorem_young_inequality}.
+\end{proof}
+
+\begin{corollary}
+  Let $f\in L^p(\bT)$ and $g\in L^q(\bT)$ be such that ${\frac 1 p}+{\frac 1 q} = 1$. Then $f\ast g$ is continuous.
+\end{corollary}
+
+\begin{proof}
+  Since $\cdot\ast g$ is linear together with Proposition \ref{proposition_1_5}, we have,
+  \begin{equation*}
+    (f\ast g)(x+h)-(f\ast g)(x) = ((f(\cdot +h)-f)\ast g)(x).
+  \end{equation*}
+  Therefore by Hölder,
+  \begin{equation*}
+    \ab{((f(\cdot +h)-f)\ast g)(x)}\leq \norm{f(\cdot+h)-f}_{L^p(\bT)}\norm{g}_{L^q(\bT)}.
+  \end{equation*}
+  As $\norm{f(\cdot+h)-f}_{L^p(\bT)}\stackrel{h\to0}{\to}0$, we have shown the statement.
+\end{proof}
+
+\begin{lemma}
+  \label{lemma_1_1}
+  For $f,g\in L^1(\bT)$, we have,
+  \begin{equation*}
+    \widehat{f\ast g}(n) = \hat{f}(n)\hat{g}(n).
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \widehat{f\ast g}(n) & = \int_{\bT}(f\ast g)(x)e_n(-x)dx,\\
+    &= \int_\bT\int_\bT f(x-y)g(y)dy e_n(-x)dx,\\
+    & = \int_\bT\int_\bT f(x-y)e_n(-(x-y))g(y)e_n(-x)dydx,\\
+    &\stackrel{\ztext{Fubini}}{=}\int_\bT\int_\bT f(x-y)e_n(-(x-y))g(y)e_n(-x)dxdy,\\
+    & = \hat{f}(n)\hat{g}(n).
+  \end{align*}
+\end{proof}
+%4/10
+
+We now extend the application of Theorem \ref{riesz-thorin} to non-linear case.
+\begin{definition}
+  Let $X,Y$ be topological vectorspaces and $D\subseteq X$ be a dense subset. An operator $T:D\to Y$ is said to be sublinear if for any $x,y\in D, c\in\bR$, we have,
+  \begin{align*}
+    \ab{T(x+y)}&\leq \ab{T(x)}+\ab{T(y)},\\
+    \ab{T(cx)} &= \ab{c}\ab{T(x)}.
+  \end{align*}
+\end{definition}
+\begin{definition}
+  For $p\in[1,\infty]$ and a measure space $(X,\mu)$, a functional $f:X\to \bR$ its weak $L^p$-norm is 
+  \begin{equation*}
+    \norm{f}_{L^{p,\infty}(X,\mu)} = \sup_{\lambda\in(0,\infty)}\lambda\mu(\{x\in X\sep \ab{f(x)}>\lambda\})^{{\frac 1 p}}.
+  \end{equation*}
+  The weak $L^p$-space on $(X,\mu)$ is a set of all functions $f:X\to \bR$ whose weak $L^p$-norm is finite.
+\end{definition}
+\begin{remark}
+  $L^{\infty,\infty}(X,\mu)=L^\infty(X,\mu)$
+\end{remark}
+\begin{proposition}
+  \label{proposition_2_1}
+  For any $p\in[1,\infty]$, we have 
+  \begin{equation*}
+    L^p(X)\subseteq L^{p,\infty}(X).
+  \end{equation*}
+\end{proposition}
+\begin{proof}
+  \begin{align*}
+    \mu(\{x\in X\sep \ab{f(x)}>\lambda\}) & \leq \int_{\{x\in X\sep \ab{f(x)}>\lambda\}}{\frac {\ab{f(x)}^p} {\lambda}}d\mu(x),\\
+    &\leq {\frac {\norm{f}_{L^p(X)}^p} {\lambda^p}}.
+  \end{align*}
+\end{proof}
+\begin{notation}
+  For measurable spaces $X,\tilde{X}$, let $T$ be a sublinear operator sending functionals on $X$ to functionals on $\tilde{X}$. We denote,
+  \begin{equation*}
+    T:L^p(X)\to L^{q,\infty}(\tilde{X})
+  \end{equation*}
+  if there is $c>0$ such that for the dense subset $\cD$ of $L^p(X)$ which $T$ is defined on 
+  \begin{equation*}
+    \forall f\in\cD, \norm{Tf}_{L^{q,\infty}(\tilde{X})}\leq c\norm{f}_{L^p(X)}.
+  \end{equation*}
+\end{notation}
+\begin{theorem}[Marcinkiewicz's Interpolation]
+  \label{theorem_2_1}
+  For measurable spaces $X,\tilde{X}$, let $T$ be a sublinear operator sending functionals on $X$ to functionals on $\tilde{X}$ and $p_1,p_2,q_1,q_2\in[1,\infty)$ such that $q_1\not=q_2$ and 
+  \begin{equation*}
+    {\frac 1 {p_1}}\geq {\frac 1 {q_1}},{\frac 1 {p_2}}\geq {\frac 1 {q_2}}.
+  \end{equation*}
+  Suppose we have
+  \begin{equation*}
+    T:L^{p_1}(X)\to L^{q_1,\infty}(\tilde{X}), T:L^{p_2}(X)\to L^{q_2,\infty}(\tilde{X}), 
+  \end{equation*}
+  then for any $\theta\in(0,1)$ and a pair $(p,q)$ such that
+  \begin{equation*}
+    \left({\frac 1 p},{\frac 1 q}\right) = \theta\left({\frac 1 {p_1}},{\frac 1 {q_1}}\right)+(1-\theta)\left({\frac 1 {p_2}},{\frac 1 {q_2}}\right),
+  \end{equation*}
+  we have
+  \begin{equation*}
+    T:L^p(X)\to L^q(\tilde{X}).
+  \end{equation*}
+\end{theorem}
+\begin{remark}
+  In applications, we will encounter operators such that $T:L^p(X)\to L^p(\tilde{X})$ for $p\in (1,\infty)$ but fails at $p=1$. 
+  The above theorem is often applied after showing $T:L^1(X)\to L^{1,\infty}(\tilde{X})$ and $T:L^\infty(X)\to L^\infty(\tilde{X})$.
+\end{remark}
+\subsection{Fourier Transform}
+
+\begin{lemma}
+  \label{lemma_2_1}
+  For a differentiable function $f:\bT\to \bR$, we have,
+  \begin{equation*}
+    \hat{f'}(n) = 2\pi i n\hat{f}(n).
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    \int_\bT f'(x)e_n(-x)dx & = f(x)e_n(-x)|_0^1+2\pi i n\int_\bT f(x)e_n(-x)dx.
+  \end{align*}
+\end{proof}
+\begin{definition}
+  Let $f:\bZ\to \bR$ be a function then the discrete derivative of $f$ is 
+  \begin{equation*}
+    \Delta f(n) = f(n) - f(n-1).
+  \end{equation*}
+\end{definition}
+\begin{lemma}
+  \label{lemma_2_2}
+  Let $z = e^{2\pi i x}$ then,
+  \begin{equation*}
+    \widehat{(1-z)f}(n) = \Delta\hat{f}(n).
+  \end{equation*}
+\end{lemma}
+\begin{lemma}
+  \label{lemma_2_3}
+  \begin{equation*}
+    f\in\cC^k(\bT)\Rightarrow \exists C>0 \text{ such that }\forall n\in \bZ\ab{\hat{f}(n)}\leq {\frac C {n^k}}.
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  For $k=1$, 
+  \begin{align*}
+    \hat{f}(n) & = \int_0^1f(x)e_n(-x)dx,\\
+    & = f(x){\frac {e_n(-x)} {-2\pi in}}|_0^1 +{\frac {1} {2\pi in}} \int_0^1 f'(x)e_n(-x)dx.
+  \end{align*}
+  Since $f'$ is continuous thus bounded on $\bT$. Therefore, $C$ can be taken as $\int_0^1\ab{f(x)}dx$.
+  \par By induction on $k$, the statement follows.
+\end{proof}
+\begin{definition}
+  For $k\in\bN$, $l^k(\bZ)$ space is the set of sequences $(x_n)_{n\in\bZ}$ of complex numbers indexed by $\bZ$ such that 
+  \begin{equation*}
+    \sum_{n\in\bZ}\ab{x_n}^k<\infty.
+  \end{equation*}
+\end{definition}
+\begin{lemma}
+  \label{lemma_2_4}
+  If $f:\bT\to \bC$ is bounded by,
+  \begin{equation*}
+    \ab{f(x)}\leq {\frac C {1-e_1(x)}},
+  \end{equation*}
+  then $\Delta\hat{f}\in l^1(\bZ)$.
+\end{lemma}
+  
+Putting these altogether, we obtain the following theorem.
+\begin{theorem}
+  We have the following duality 
+  \begin{center}
+    \begingroup
+
+\renewcommand{\arraystretch}{3} % Default value: 1
+\begin{tabular}{ccc}
+Physical side                               & $\stackrel{\widehat{(\cdot)}}{\longleftrightarrow}$ & Frequency side                \\ \hline
+Convolution                                 & $\longleftrightarrow$ & Multiplication                \\
+Differentiation                             & $\longleftrightarrow$ & Multiplication by polynomials \\
+Multiplication by trigonometric polynomials & $\longleftrightarrow$ & Discrete differentiation      \\
+Regularity                                  & $\longleftrightarrow$ & Decay                         \\
+Decay                                       & $\longleftrightarrow$ & Regularity                   
+\end{tabular}
+  \end{center}
+  \endgroup
+\end{theorem}
+
+\begin{remark}
+  \begin{equation*}
+    \widehat{S_Nf} = \hat{f}\cdot\chi_{[-N,N]}.
+  \end{equation*}
+\end{remark}
+\begin{definition}
+  Let $f\in L^1(\bT)$. We define the Cesaro mean of $f$ to be
+  \begin{equation*}
+    \sigma_Nf(x) \defeq {\frac 1 N}\sum_{k=1}^{N-1}S_kf(x).
+  \end{equation*} 
+\end{definition}
+Observe that 
+\begin{align*}
+  \sigma_Nf(x) & = {\frac 1 N}\sum_{k=0}^{N-1}(f\ast D_k)(x),\\
+  & = f\ast\left({\frac 1 N}\sum_{k=0}^{N-1}D_k\right)(x).
+\end{align*}
+\begin{definition}
+  Motivated by the above observation, we define the Fejer kernel to be,
+  \begin{equation*}
+    K_N\defeq {\frac 1 N}\sum_{k=0}^{N-1}D_k.
+  \end{equation*}
+\end{definition}
+\begin{remark}
+  $\widehat{K_N}$ is graphed as
+  \begin{center}
+    \begin{tikzpicture}
+\draw[->,thick] (-2,0)--(2,0) node[right]{$n$};
+\draw[->,thick] (0,-0.5)--(0,1.5) node[above]{};
+\draw (0,1) -- (-1,0)node[below]{$-N$};
+\draw (0,1) -- (1,0)node[below]{$N$};
+\end{tikzpicture}
+  \end{center}
+\end{remark}
+\begin{lemma}
+  For $N\in\bN$, 
+  \begin{equation*}
+  \vert\sin(Nx)\vert\leq N\ab{\sin(x)}.
+  \end{equation*}
+  \label{lemma_2_6}
+\end{lemma}
+\begin{proof}
+  Induction on $N$ using the addition theorem for trigonometric functions.
+\end{proof}
+\begin{lemma}
+  \label{lemma_2_7}
+  There is $C>0$ such that for any $x\in \bT$,
+  \begin{equation*}
+    0\leq K_N(x)\leq {\frac C N}\min\left\{N^2,{\frac 1 {x^2}}\right\}.
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  Let $z = e_1(x)$. From the proof of Proposition \ref{proposition_1_4}, we have
+  \begin{align*}
+    K_N(x)(z^{{\frac 1 2}}-z^{-{\frac 1 2}}) & = {\frac 1 N}\left(\sum_{k=0}^{N-1}z^{k+{\frac 1 2}}-z^{-k-{\frac 1 2}}\right),\\
+    & = {\frac 1 N}\left({\frac {z^N-1} {z^{{\frac 1 2}}-z^{-{\frac 1 2}}}}+{\frac {1-z^{-N}} {z^{{\frac 1 2}}-z^{-{\frac 1 2}}}}\right),\\
+    & = {\frac 1 N}{\frac {(z^{{\frac 1 N}}-z^{-{\frac 1 N}})^2} {z^{{\frac 1 2}}-z^{-{\frac 1 2}}}},\\
+    & = {\frac 1 N}{\frac {\sin^2 (N\pi x)} {\sin^2(\pi x)}}\geq0.
+  \end{align*}
+  The upperbound follows from Taylor expansion and Lemma \ref{lemma_2_6}.
+\end{proof}
+
+\begin{definition}
+  A family of bounded complex-valued functions $\{\Phi_n\}_{n\in \bN}$ on $\bT$ is called an approximate identity if 
+  \begin{enumerate}[i.]
+    \item $\forall n\in\bN,\int_\bT\Phi_n(x)dx = 1$.
+    \item $\sup_{n\in\bN}\int_\bT\vert\Phi_n(x)\vert dx <\infty$.
+    \item $\forall \delta>0,\lim_{n\to\infty}\int_{\ab{x}>\delta}\ab{\Phi_N(x)}dx = 0$.
+  \end{enumerate}
+\end{definition}
+\begin{example}
+  Set $\Phi_n(x)$ to be 
+    \begin{center}
+    \begin{tikzpicture}
+\draw[->,thick] (-2,0)--(2,0) node[right]{};
+\draw[->,thick] (0,-0.5)--(0,1.5) node[above]{};
+\draw (-0.45,1.2) -- (-0.45,0)node[below]{$-{\frac 1 {2n}}$};
+\draw (0.45,1.2) -- (0.45,0)node[below]{${\frac 1 {2n}}$};
+\draw (-0.45,1.2) -- (0,1.2)node[above right]{$n$}--(0.45,1.2);
+\end{tikzpicture}
+  \end{center}
+  $(\Phi_n)_{n\in\bN}$ is called the box kernels. This is an approximate identity.
+\end{example}
+\begin{theorem}
+  \label{theorem_2_2}
+  Fejér kernel is an approximate identity.
+\end{theorem}
+\begin{proof}
+  Clearly $\int_{\bT}K_n(x) = 1$ since for each $D_k$, the constant $1$ term survives. Since $K_n$ is everywhere non-negative, the second condition is shown immediately.
+  \par Lastly for $\delta>0$, let $N>{\frac 1 \delta}$ then,
+  \begin{align*}
+    \int_{\ab{y}>\delta}\ab{K_N(y)}dy &\stackrel{\ztext{Lemma \ref{lemma_2_7}}}{\leq} 2C\int_\delta^{{\frac 1 2}}{\frac 1 {Ny^2}}dy,\\
+    & \leq {\frac 1 N}(\delta^{-1}-2)\stackrel{N\to \infty}{\to}0.
+  \end{align*} 
+\end{proof}
+\begin{definition}
+  Let $(\mu_n)_{n\in\bN}$ be a sequence in $\cM(\bT)$. We say $\mu_n$ converges to $\mu$ in weak-$\star$-sense if for any $f\in C^0(\bT)$, 
+  \begin{equation*}
+    \int_\bT f(x)d\mu_n(x)\stackrel{n\to\infty}{\to}\int_\bT f(x)d\mu(x).
+  \end{equation*}
+\end{definition}
+\begin{proposition}
+  For any approximate identity $\{\Phi_n\}_{n\in\bN}$, the following statements hold.
+  \begin{enumerate}[1. ]
+    \item If $f\in C^0(\bT)$, then $\norm{\Phi_n\ast f-f}_{L^\infty(\bT)}\to 0$ as $n\to\infty$.
+    \item For $p\in[1,\infty)$ and $f\in L^p(\bT)$, we have $\norm{\Phi_n\ast f-f}_{L^p(\bT)}\to 0$ as $n\to\infty$.
+    \item If $\mu\in\cM(\bT)$, then $|mu\ast\Phi_n\to \mu$ in weak-$\star$-sense. 
+  \end{enumerate}
+  \label{proposition_2_9}
+\end{proposition}
+\begin{proof}
+  %current Current
+\end{proof}
+% \section{Preliminaries}
+% \subsection{Measure Spaces}
+
+% \begin{definition}
+% Let $(X,\mathcal{A})$ be a measurable space. A complex measure on $(X,\mathcal{A})$ is a function $\mu:\mathcal{A}\to \mathbb{C}$ such that for any disjoint sets $\{A_i\}_{i\in \mathbb{N}}\subset\mathcal{A}$, we have
+% \begin{equation*}
+% \mu\left(\bigcup_{i\in \mathbb{N}} A_i\right) = \sum_{i\in\mathbb{N}}\mu(A_i).
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% A measure $\mu$ on a measurable space $(X,\mathcal{A})$ is said to be $\sigma$-finite if there exists a covering $(A_i)_{i\in I}$ with $I$ at most countable index set such that $\mu(A_i)$ is finite for each $i\in I$. 
+% \end{definition}
+
+% \begin{definition}
+% A Borel measure $\mu$ on $X$ is said to be inner regular if for any open set $U$, we have
+% \begin{equation*}
+% \mu(U) = \sup\{\mu(K)\:|\: K\subset U,\text{ $K$ is a compact set}\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% A Borel measure is said to be locally finite if every point has a neighborhood with finite measure.
+% \end{definition}
+
+% \begin{definition}
+% A Borel measure is said to be Radon if it is inner regular and locally finite.
+% \end{definition}
+
+% \begin{theorem}
+% Lebesgue measures are Radon.
+% \end{theorem}
+
+% \begin{definition}
+% The torus in $\mathbb{C}$ is a subset $\mathbb{T}$ such that
+% \begin{equation*}
+% \mathbb{T} = \{z\in\mathbb{C}\:|\: \vert z\vert = 1\}.
+% \end{equation*}
+% \end{definition}
+% \begin{remark}
+% We have the following homeomorphism
+% \begin{equation*}
+% \mathbb{T}\cong\mathbb{R}/\mathbb{Z}\cong[0,1).
+% \end{equation*}
+% \end{remark}
+
+% \begin{definition}
+% We define the following set of measures
+% \begin{equation*}
+% \mathcal{M}(\mathbb{T}) = \{\mu:\mathcal{B}(\mathbb{T})\to\mathbb{C}\:|\: \mu\text{ is a finite and complex Borel measure on $\mathbb{T}$}\}.
+% \end{equation*}
+% Furthermore, this has a normed space structure with a norm $\Vert\cdot\Vert_\mathcal{M}$, such that
+% \begin{equation*}
+% \Vert\mu\Vert_\mathcal{M} = \sup\{\sum_{i\in I}\mu(A_i)\:|\: \{A_i\}_{i\in I} \text{ is a disjoint collection in }\mathcal{A}\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{theorem}
+% Let $(X,\mathcal{A},\mu)$ be a measure space. The inclusion $L^q(X)\subseteq L^p(X)$ holds for any $1\leq p<q\leq\infty$ if and only if $\mu(X)$ is finite.
+% \end{theorem}
+
+% \begin{proposition}
+% For any $1\leq p\leq\infty$ and $f\in L^p(\mathbb{T})$, we have $\mu_f:\mathcal{B}(\mathbb{T})\to\mathbb{C}$ defined as 
+% \begin{equation*}
+% \mu(U) = \int_U f(x)dx,
+% \end{equation*}
+% is a finite complex Borel measure.
+% \end{proposition}
+
+% \begin{theorem}
+% $(L^2(\mathbb{T}),\langle,\cdot,\cdot\rangle_{L^2})$ is a Hilbert space where
+% \begin{equation*}
+% \langle f,g\rangle_{L^2} = \int_\mathbb{T}f\overline{g}dx.
+% \end{equation*}
+% \end{theorem}
+
+% \subsection{Integration and Inequalities}
+
+% \begin{theorem}[Fubini]
+% Let $X,Y$ be $\sigma$-finite measure space with measures $dx,dy$. Let $f\in L^1(X\times Y)$. Then we have
+% \begin{equation*}
+% \int_X\int_Yf(x,y)dydx = \int_X\int_Yf(x,y)dydx = \int_{X\times Y}f(x,y)dx\times dy.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{theorem}[Tonelli]
+% Let $X,Y$ be $\sigma$-finite measure space with measures $dx,dy$. Let $f:X\times Y\to [0,\infty)$ be a measurable function. Then we have
+% \begin{equation*}
+% \int_X\int_Yf(x,y)dydx = \int_X\int_Yf(x,y)dydx = \int_{X\times Y}f(x,y)dx\times dy.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{corollary}
+% Let $f,g\in L^1(\mathbb{X})$. We have $f\ast g\in L^1(\mathbb{X})$. 
+% \end{corollary}
+
+% \begin{proof}
+% \begin{equation*}
+% f\ast g(x) = \int_X \vert f\ast g(x)\vert dx \leq \int_X\int_X \vert f(x-y)\vert\vert g(y)\vert dydx = \Vert f\Vert_{L^1}\Vert g\Vert_{L^1}.
+% \end{equation*}
+% \end{proof}
+
+% \begin{theorem}[Minkowski's Inequality]
+% Let $(X,\mathcal{A},\mu)$ be a measure space and $1\leq p\leq\infty$. Then for any $f,g\in L^p(X)$, we have $f+g\in L^p(X)$. In particular,
+% \begin{equation*}
+% \Vert f+g\Vert_{L^p}\leq \Vert f\Vert_{L^p}+\Vert g\Vert_{L^p}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{theorem}[Riesz-Thorin Interpolation]
+% Let $(X,\mu)$, $(Y,\nu)$ be measure spaces and $T$ be a linear map between measurable functionals on $X$ to measurable functionals on $Y$. Suppose for some $p_1,q_1,p_2,q_2\in[1,\infty]$, we have,
+% \begin{equation*}
+% T(L^{p_1}(X))\subseteq L^{q_1}(Y),\quad T(L^{p_2}(X))\subseteq L^{q_2}(Y).
+% \end{equation*}
+% Then for any $\theta\in[0,1]$ and let $(p,q)$ be such that
+% \begin{equation*}
+% {\frac 1 p} = {\frac \theta p_1}+{\frac {1-\theta} p_2},\quad {\frac 1 q} = {\frac \theta q_1}+{\frac {1-\theta} q_2},
+% \end{equation*}
+% we have
+% \begin{equation*}
+% T(L^p(X))\subseteq L^q(Y).
+% \end{equation*}
+% In particular, 
+% \begin{equation*}
+% \Vert T\Vert_{L^p(X)\to L^q(Y)} \leq \Vert T\Vert^\theta_{L^{p_1}(X)\to L^{q_1}(Y)}\Vert T\Vert^{1-\theta}_{L^{p_2}(X)\to L^{q_2}(Y)}.
+% \end{equation*}
+% \label{riesz-thorin}
+% \end{theorem}
+
+% \begin{corollary}[Young]
+% Let $1\leq p,q,r\leq\infty$ be such that 
+% \begin{equation*}
+% 1+{\frac 1 r}={\frac 1 p}+{\frac 1 q}.
+% \end{equation*}
+% For $f\in L^p(\mathbb{T})$ and $g\in L^q(\mathbb{T})$, we have $f\ast g\in L^r(\mathbb{T})$. In particular,
+% \begin{equation*}
+% \Vert f\ast g\Vert_{L^r} \leq \Vert f\Vert_{L^p}\Vert g\Vert_{L^q}.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}Let us fix $p$. Then varying $q$ in $[1,p']$ will determine the value of $r$ where $p'={\frac {p} {p-1}}$.\\
+% \par Consider $q=1$, therefore, $r=p$. Using Minkowski's inequality, we get
+% \begin{equation*}
+% \Vert f\ast g\Vert_{L^p}^p \leq \int_0^1\int_0^1 \Vert f(x-y)g(y)\Vert_{L^p}^pdy = \Vert f\Vert_{L^p}^p \Vert g\Vert_{L^p}^p
+% \end{equation*}
+% \par Consider $q=p'$. Using Hölder's inequality, we get
+% \begin{equation*}
+% \Vert f\ast g\Vert_{L^\infty} = \esssup_{x\in\mathbb{T}} \vert \int_0^1 f(x-y)g(y)dy\vert \leq \esssup_{x\in\mathbb{T}}\Vert f(x-\cdot)g\Vert_{L^1} \leq \Vert f\Vert_{L^p} \Vert g\Vert_{L^{p'}}.
+% \end{equation*}
+% For the general case, for fixed $f\in L^p(\mathbb{T})$, we get a linear map $T$ such that
+% \begin{equation*}
+% T(g) = f\ast g.
+% \end{equation*}
+% By previous two cases, we get $T:L^1(\mathbb{T})\to L^p(\mathbb{T})$ and $T:L^{p'}(\mathbb{T})\to L^\infty(\mathbb{T})$. Thus we get the claim for $(q,r) = (\theta+(1-\theta)p',\theta p)$ where $\theta\in[0,1]$. In particular,
+% \begin{equation*}
+% {\frac 1 p}+\theta+(1-\theta)p' = 1 + \theta(1-p') = \theta p.
+% \end{equation*}
+% \end{proof}
+
+% \begin{definition}
+% For $f\in\mathcal{C}^0(\mathbb{T})$ and $\mu\in\mathcal{M}(\mathbb{T})$, we define 
+% \begin{equation*}
+% f\ast\mu(x) = \int_0^1 f(x-y)d\mu(y).
+% \end{equation*}
+% \end{definition}
+
+% \begin{corollary}
+% Let $f\in L^p(\mathbb{T})$ and $\mu\in\mathcal{M}(\mathbb{T})$. We have
+% \begin{equation*}
+% \Vert f\ast \mu\Vert_{L^p} \leq \Vert f\Vert_{L^p}\Vert \mu\Vert_\mathcal{M}.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% By Radon-Nikodym decomposition, we can approximate $\mu$ by some $L^1$ function. Using $q=1$ case of Young's inequality, we get the result.
+% \end{proof}
+
+% \begin{theorem}[Chebyshev]
+% Let $(X,\mu)$ be a measure space and $f\in L^1(X)$. We have for any$ \varepsilon>0$,
+% \begin{equation*} 
+% \mu(\{x\in X\:|\: \vert f(x)\vert >\varepsilon\}) \leq {\frac 1 \varepsilon}\Vert f\Vert_{L^1}.
+% \end{equation*}
+% \end{theorem}
+
+% \subsection{Weak $L^p$ Spaces}
+
+% \begin{definition}
+% Let $(X,\mathcal{A},\mu)$ be a measure space and $p\in[1,\infty]$. We say a functional $f:X\to\mathbb{R}$ is of weak $L^p$ class if
+% \begin{equation*}
+% \Vert f\Vert_{L^{p,\infty}} = \sup\{\lambda\mu(\{x\in X\:|\: \vert f(x)\vert>\lambda\})^{{\frac 1 p}}\}_{\lambda\in(0,\infty)},
+% \end{equation*}
+% is finite. And we define the weak $L^p$ space as
+% \begin{equation*}
+% L^{p,\infty}(X) = \{f:X\to\mathbb{R}\:|\: \Vert f\Vert_{L^{p,\infty}} <\infty\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% We have the inclusion
+% \begin{equation*}
+% L^p(X)\subseteq L^{p,\infty}(X).
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% Let $E_\lambda=\{x\in X\:|\: \vert f(x)\vert>\lambda\}$.
+% \begin{equation*}
+% \mu(E_\lambda) \leq \int_{E_\lambda} \left({\frac {\vert f(x)\vert} {\lambda}}\right)^p dx = {\frac 1 {\lambda^p}}\Vert f\Vert_{L^p}^p.
+% \end{equation*}
+% \end{proof}
+
+% \begin{definition}
+% Let $\mathcal{D}\subset L^p(X)$ be a dense subset. A functional $T:\mathcal{D}\to\mathbb{R}$ is said to be sublinear if for any $f_1,f_2\in\mathcal{D}$ and $c\in\mathcal{R}$, we have
+% \begin{enumerate}[i).]
+% \item $\vert T(f_1+f_2)\vert\leq \vert Tf_1\vert+\vert Tf_2\vert$.
+% \item $\vert Tcf_1\vert\leq\vert c\vert\vert Tf_1\vert$.
+% \end{enumerate}
+% \end{definition}
+
+% \begin{theorem}[Marcinkiewicz]
+% Let $X,Y$ be measure spaces and $p_1,p_2,q_1,q_2\in[1,\infty)$ such that $p_1\leq q_1,p_2\leq q_2$. Suppose $T$ be a sublinear operator of functionals on $X$ such that
+% \begin{equation*}
+% T(L^{p_1}(X))\subseteq L^{q_1}(Y),\quad T(L^{p_2}(X))\subseteq L^{q_2}(Y).
+% \end{equation*}
+% Then for any $\theta\in[0,1]$ and $(p,q) = \theta(p_1,q_1)+(1-\theta)(p_2,q_2)$, we have
+% \begin{equation*}
+% T(L^{p}(X))\subseteq L^{q}(Y).
+% \end{equation*}
+% \end{theorem}
+
+% \subsection{Probability Theory}
+
+% \begin{definition}
+% Let $X:\Omega\to\mathbb{R}$ be a random variable. $\sigma(X)$ is the smallest $\sigma$-subalgebra over which $X$ is measurable.
+% \end{definition}
+
+% \begin{definition}
+% Let $(\Omega,\Sigma,\mathbb{P})$ bea probability space. Two events $A,B\in\Sigma$ are independent to one another if we have
+% \begin{equation*}
+% \mathbb{P}(A\cap B) = \mathbb{P}(A)\mathbb{P}(B).
+% \end{equation*}
+% Two sub-$\sigma$-algebras $\Sigma_1,\Sigma_2\subseteq\Sigma$ are independent if for any $A\in\Sigma_1,B\in\Sigma_2$, $A,B$ are independent. 
+% \par Two random variables $X_1,X_2:\Omega\to\mathbb{R}$ are independent if $\sigma(X_1),\sigma(X_2)$ are independent. 
+% \end{definition}
+
+% \begin{definition}
+% Let us consider the probability space $([0,1],\mathcal{B}([0,1]),dx)$. The Rademacher system is a set of functions on $[0,1]$ $\{r_j\}_{j\in\mathbb{N}\cup\{0\}}$ such that 
+% \begin{equation*}
+% r_j(t) = \sgn(\sin(2\pi2^j t)).
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% Let $X=r_i$ and $Y=r_j$ where $r_i,r_j$ are functions from the Rademacher system. Then any two of $X,Y,\vert X-Y\vert$ are independent but not all three at the same time.
+% \end{lemma}
+
+% \begin{corollary}
+% Let $(\varepsilon_i)_{i=1,\cdots,n}\in\{0,1\}$ and $(r_{k_i})_{i=1,\cdots,n}$ be a subset of the Rademacher system. Then 
+% \begin{equation*}
+% \mathbb{P}(r_{k_1}=\varepsilon_1,\cdots,r_{k_n}=\varepsilon_n) = 2^{-n}.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% %later.
+% \end{proof}
+
+% \begin{theorem}[Borel-Cantelli]
+% Let $(A_i)_{i\in\N}$ a sequence of events. For $X=\sum_{i\in\N} \chi_{A_i}$, we have
+% \begin{equation*}
+% \mathbb{E}(X)<\infty\Rightarrow X\text{ is finite almost everywhere}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{lemma}
+% For $x\geq0$, $1-x\leq e^{-x}$.
+% \end{lemma}
+
+% \begin{lemma}
+% Let $(A_i)_{i\in\N}$ be a sequence of independent events and $\mathcal{F}_\infty = \bigcap_{N\in\N}\bigcup_{i=N}^\infty A_i$. We have the following statements.
+% \begin{enumerate}
+% \item $\sum_{i\in\N}\prob(A_i) <\infty\Rightarrow\prob(\mathcal{F}_\infty)=0$.
+% \item $\sum_{i\in\N}\prob(A_i) =\infty\Rightarrow\prob(\mathcal{F}_\infty)=1$.
+% \end{enumerate}
+% \end{lemma}
+
+% \begin{proof}
+% Using the lemma above, we get
+% \begin{equation*}
+% \prob(\bigcap_{i=k}^NA_i^c) =\prod_{i=k}^N(1-\prob(A_i))\leq\prod_{i=k}^Ne^{-\prob(A_i)} = \exp(-\sum_{i=k}^N \prob(A_i)). 
+% \end{equation*}
+% This proves the statement.
+% \end{proof}
+
+% \begin{lemma}
+% For $a_1,\cdots,a_N$ be complex numbers, let $S_N= \sum_{i=1}^N a_ir_i$ and $\sigma^2 = \Var(S_N)$. Then for any $\lambda>0$, we have
+% \begin{equation*}
+% \prob(\vert S_N\vert >\lambda\sigma^2)\leq 4e^{-{\frac {\lambda^2} 4}}.
+% \end{equation*}
+% \label{s_n_expectation}
+% \end{lemma}
+
+% \begin{proof}
+% First we consider all $a_i$ are real. Observe that $(r_i)_{i=1,\cdots,N}$ is a set of independent random variables. For two independent random variables $X,Y$ we have
+% \begin{equation*}
+% \expect(XY) = \expect(X)\expect(Y).
+% \end{equation*}
+% From this we get,
+% \begin{equation*}
+% \expect(e^{X+Y}) = \expect(e^X)\expect(e^Y).
+% \end{equation*}
+% Therefore, we get
+% \begin{equation*}
+% \expect(e^{tS_N}) = \sum_{i=1}^N\expect(e^{ta_ir_i})= \sum_{i=1}^N\left({\frac {e^{ta_i}+e^{-ta_i}} {2}}\right) = \prod_{i=1}^N\cosh(ta_i).
+% \end{equation*}
+% From Taylor series, we get
+% \begin{equation*}
+% \cosh(x)\leq e^{{\frac {x^2} 2}}.
+% \end{equation*}
+% Thus we get,
+% \begin{equation*}
+% \expect(tS_N) \leq \exp\left(\sum_{i=1}^N t^2{\frac {a_i^2} 2}\right).
+% \end{equation*}
+% By the independentness, we get
+% \begin{equation*}
+% \Var(S_N) = \expect(S_N^2) = \sum_{i=1}^N a_i^2.
+% \end{equation*}
+% Therefore, we get 
+% \begin{equation*}
+% \expect(S_N) \leq \exp\left(\sum_{i=1}^N t^2{\frac {a_i^2} 2}\right).
+% \end{equation*}
+% With
+% \begin{equation*}
+% \prob(\vert tS_N\vert\geq t\lambda\sigma^2) = \prob(e^{\vert tS_N\vert }\geq e^{t\lambda\sigma^2}).
+% \end{equation*}
+% Using Markov inequality, we get
+% \begin{equation*}
+% \prob(e^{\vert tS_N\vert }\geq e^{t\lambda\sigma^2}) \leq e^{t^2{\frac {\sigma^2} 2}}e^{-t\lambda\sigma^2}.
+% \end{equation*}
+% Take $t={\frac \lambda \sigma}$, we get
+% \begin{equation*}
+% \prob(e^{\vert tS_N\vert }\geq e^{t\lambda\sigma^2}) \leq e^{-{\frac {\lambda^2} 2}}.
+% \end{equation*}
+% Thus we get
+% \begin{equation*}
+% \prob(\vert S_N\vert \geq \lambda\sigma^2)  \leq 2e^{-{\frac {\lambda^2} 2}}.
+% \end{equation*}
+% \par For the complex case, we consider the real part and the imaginary part and reduce to the previous case,
+% \begin{equation*}
+% \vert S_N\vert^2 =\vert \Re{S_N}\vert^2+ \vert \Im{S_N}\vert^2\geq\lambda\sigma^2.
+% \end{equation*}
+% \end{proof}
+
+% \begin{theorem}[Kolmogorov]
+% Let $(X_n)_{n\in\N}$ be a sequence of independent random variables and $\mathcal{F}_\infty = \bigcap_{n\in\N}\sigma(X_n,X_{n+1},\cdots)$. Then we have
+% \begin{equation*}
+% A\in\mathcal{F}_\infty\Rightarrow \prob(A)\in\{0,1\}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Let $\mathcal{G}_n = \sigma(X_n,X_{n+1},\cdots)$. Then for any $n$, $\mathcal{F}_\infty$ and $\mathcal{G}_n$ are independent. Therefore $\mathcal{F}_\infty$ and $\sigma(\bigcup_{n=N}^\infty\mathcal{G}_n)$ are independent. Since $\mathcal{F}_\infty\subset\sigma(\bigcup_{n=N}^\infty\mathcal{G}_n)$, $\mathcal{F}_\infty$ is independent to itself. Thus for any $A\in\mathcal{F}_\infty$, we get
+% \begin{equation*}
+% \prob(A) = \prob(A\cap A) = \prob(A)^2.
+% \end{equation*}
+% \end{proof}
+
+% \begin{theorem}[Khintchine]
+% For any $1\leq p<\infty$, there is a constant $C_p$ depending only on $p$ such that for any complex numbers $a_1,\cdots,a_N$ and $S_N= \sum_{i=1}^N a_ir_i$.
+% \begin{equation*}
+% {\frac 1 {C_p}}\Vert a\Vert_{L^2} \leq\Vert S_N\Vert_{L^p} \leq\ C\Vert a\Vert_{L^2}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Using Lemma \ref{s_n_expectation} and the equivalence of the norm on finite dimensional vector spaces, we get the claim.
+% %later 5.12
+% \end{proof}
+
+
+
+% \section{Linear Operators on $L^p(\mathbb{T})$}
+% \subsection{Fourier Transform on $\mathbb{T}$}
+
+% \begin{notation}
+% For $n\in\mathbb{Z}$, we denote
+% \begin{equation*}
+% e_n(x) = \exp(-2n\pi ix).
+% \end{equation*}
+% \end{notation}
+
+% \begin{proposition}
+% $\{e_n(x)\}_{n\in\mathbb{Z}}$ is an orthonormal basis in $L^2(\mathbb{T})$. 
+% \end{proposition}
+
+% \begin{notation}
+% For $f\in L^1(\mathbb{T})$ and $n\in\mathbb{Z}$, we denote
+% \begin{equation*}
+% \hat{f}(n) = \langle f(x),e(nx)\rangle_{L^2}.
+% \end{equation*}
+% \end{notation}
+
+% \begin{corollary}
+% For any $f\in L^2(\mathbb{T})$, we have
+% \begin{equation*}
+% f(x) = \sum_{n\in\mathbb{Z}}\hat{f}(n)e(nx).
+% \end{equation*}
+% \end{corollary}
+
+% \begin{definition}
+% Let $N\in\mathbb{N}$, The partial sum operator $S_N:L^1(\mathbb{T})\to L^1(\mathbb{T})$ is a linear operator such that
+% \begin{equation*}
+% S_Nf = \sum_{n=-N}^N \hat{f}(n)e_n(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% The Dirichlet kernel $D_N$ is defined as 
+% \begin{equation*}
+% D_N(x) = \sum_{n=-N}^N e_n(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% \begin{equation*}
+% S_Nf = D_N\ast f.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% \begin{align*}
+% S_Nf(x) &= \sum_{n=-N}^N \hat{f}(n)e_n(x),\\
+% & = \sum_{n=-N}^N \int_0^1 f(y)e_n(-y)dye_n(x),\\
+% & = \sum_{n=-N}^N \int_0^1 f(y)e_n(-(y-x))dy,\\
+% & =  \sum_{n=-N}^N (f\ast e_{-n})(x),\\
+% & = f\ast\left(\sum_{n=-N}^N e_n(x)\right).
+% \end{align*}
+% \end{proof}
+
+% \begin{proposition}
+% \begin{equation*}
+% D_N(x) = {\frac {\sin((2N+1)\pi x)} {\sin(\pi x)}}.
+% \end{equation*}
+% In particular, we have
+% \begin{equation*}
+% \vert D(x)\vert\lesssim\min\left\{N,{\frac 1 x}\right\}.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% Let $z = e_1(x)$. Then we have
+% \begin{align*}
+% D_N(z) = z^{-N}\sum_{n=0}^{2N} z^n = z^{-N}{\frac {z^{2N+1}-1} {z-1}} = {\frac {z^{N+{\frac 1 2}}-z^{-N-{\frac 1 2}}} {z^{{\frac 1 2}}-z^{-{\frac 1 2}}}} = {\frac {\sin((2N+1)\pi x)} {\sin(\pi x)}}.
+% \end{align*}
+% Using $\lim_{x\to0}{\frac {\sin(x)} x}=1$, we have $D_N$ is bounded by $2N+1$ around the origin. As $D_N$ is even we get $D_N\lesssim{\frac 1 x}$ away from the origin.
+% \end{proof}
+
+% \begin{definition}
+% Let $t\in\mathbb{T}$. The translation operator by $t$ is a linear operator $\tau_t$ such that for any $f:\mathbb{T}\to \mathbb{C}$, 
+% \begin{equation*}
+% \tau_t f(x) = f(x-t).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% On $\mathbb{T}$, the convolution commutes with translation operators. 
+% \end{proposition}
+
+% \begin{proof}
+% \begin{equation*}
+% \tau_t(f\ast g)(x) = \int_0^1 f(x-y-t)g(y)dy = \int_0^1 f(x-y)g(y-t)dy = (f\ast \tau_tg)(x).
+% \end{equation*}
+% \end{proof}
+
+% \begin{corollary}
+% Let $f\in L^p(\mathbb{T})$ and $g\in L^{p'}(\mathbb{T})$. Then $f\ast g$ is continuous.
+% \end{corollary}
+
+% \begin{proof}
+% By Young's inequality, $f\ast g$ is bounded. Using the commutativity of the convolution and the translations, we get
+% \begin{equation*}
+% f\ast g(x+h) - f\ast g = f\ast (g(\cdot+h)-g)(x).
+% \end{equation*}
+% By the density of continuous functions in $L^q$ and $\mathcal{T}$ is compact thus any function is uniformly continuous, we get the claim.
+% \end{proof}
+
+% \begin{corollary}
+% Let $f,g\in L^1(\mathbb{T})$, we get $\widehat{f\ast g}(n) = \hat{f}(n)\hat{g}(n)$.
+% \end{corollary}
+
+% \begin{proof}
+% $f\ast g$ is of $L^1$. Using Fubini, we get
+% \begin{align*}
+% \int_0^1 \int_0^1f(x-y)g(y)dye_{-n}(x)dx  = \int_0^1 g(y)e_{-n}(y) \int_0^1f(x-y)e_{-n}(x-y)dxdy = \hat{f}(n)\hat{g}(n).
+% \end{align*}
+% \end{proof}
+
+% \begin{notation}
+% For $n\in\mathbb{Z}$ and a function $f:\mathbb{R}\to\mathbb{R}$, we define $\Delta f(n) = f(n)-f(n-1)$.
+% \end{notation}
+
+% \begin{theorem}We have the following properties of Fourier Transform.
+% \begin{enumerate}[1).]
+% \item $f$ is differentiable then $\widehat{f'}(n) = 2n\pi i\hat{f}(n)$. 
+% \item $\widehat{(1-e_1)f}(n) = \Delta \hat{f}(n)$.
+% \item $f\in\mathcal{C}^k(\mathbb{T})$ if and only if $\hat{f}(n)\leq {\frac C {n^k}}$ for some $C>0$. 
+% \item $f(x)\leq {\frac C {\vert 1-e_1(x)\vert }}$ if and only if $(\hat{f}(n))_{n\in\mathbb{Z}}$ and $(\Delta\hat{f}(n))_{n\in\mathbb{Z}}$ are of $l^1(\mathbb{Z})$.
+% \end{enumerate}
+% \end{theorem}
+
+% \begin{proof}
+% The first one is due to the integration by part and the periodicity. The second one is a simple calculation. The third one follows the first one together with any continuous functions are of $L^2$ class which is finite everywhere.\\
+% \par To prove the forth one, we observe%later
+% \end{proof}
+
+% \subsection{Approximate identity}
+
+% \begin{definition}
+% A Fejér kernel is $K_N = {\frac 1 N}\sum_{n=0}^{N-1} D_n$.
+% \end{definition}
+
+% \begin{definition}
+% For $f\in L^1(\mathbb{T})$, the Cesaro mean of $f$ is 
+% \begin{equation*}
+% \sigma_Nf(x) = (f\ast K_N)(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% \begin{equation*}
+% \widehat{K_N}(x) = {\frac 1 N}\sum_{n=0}^{N-1} \chi_{[-n,n]}(x).
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% \begin{equation*}
+% \hat{e_n}(k) = 
+% \begin{cases}
+% 1\quad(n=k)\\
+% 0\quad(n\not=k).
+% \end{cases}
+% \end{equation*}
+% \end{proof}
+
+% \begin{proposition}
+% \begin{equation*}
+% K_N(x) = {\frac 1 N}{\frac {\sin^2(N\pi x)} {\sin^2(\pi x)}}.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% For $z = e_1(x)$, we get
+% \begin{align*}
+% (z^{{\frac 1 2}}-z^{-{\frac 1 2}}) K_N(z) &= {\frac 1 N}\sum_{n=0}^{N-1}(z^{n+{\frac 1 2}}-z^{-n-{\frac 1 2}}),\\
+% &= z^{{\frac 1 2}}\sum_{n=0}^{N-1} z^n-z^{-{\frac 1 2}}\sum_{n=0}^{N-1} z^{-n},\\
+% & = z^{{\frac 1 2}}{\frac {z^N-1} {z-1}}-z^{-{\frac 1 2}}{\frac {z^{-N}-1} {z^{-1}-1}},\\
+% & = {\frac {(z^{{\frac N 2}}-z^{-{\frac N 2}})^2} {(z^{{\frac 1 2}}-z^{-{\frac 1 2}})}}.
+% \end{align*}
+% \end{proof}
+
+% \begin{corollary}
+% \begin{equation*}
+% 0\leq K_N(x)\lesssim{\frac 1 N}\min\{{\frac 1 {x^2}},N^2\}.
+% \end{equation*}
+% \label{bound_fejer_kernel}
+% \end{corollary}
+
+% \begin{proof}
+% The first part is obvious. The second part is by the same argument as $D_N$. 
+% \end{proof}
+
+% \begin{definition}
+% A family of functions $\{\Phi_n\}_{n\in\mathbb{N}}\in L^\infty(\mathbb{T})$ is called an approximate identity if
+% \begin{enumerate}[i).]
+% \item For any $n\in\mathbb{N}$, $\int_0^1\Phi_n(x)dx = 1$.
+% \item $\sup_{n\in\mathbb{N}}\int_0^1\vert \Phi_n(x)\vert dx$ is finite.
+% \item For any $\delta>0$, we have $\lim_{n\to\infty}\int_{\vert x \vert >\delta}\vert\Phi_n(x)\vert dx = 0$. 
+% \end{enumerate}
+% \end{definition}
+
+% \begin{example}[Box Kernels]
+% Let $\Phi_N(x) = \chi_{[-{\frac 1 {2N}},{\frac 1 {2N}}]}(x)$ then $\{\Phi_N\}_{N\in\mathbb{N}}$ is an approximate identity.
+% \end{example}
+
+% \begin{theorem}
+% The collection of all Fejér kernels is an approximate identity.
+% \end{theorem}
+
+% \begin{proof}
+% Using that $1= e_0(x)$, we get the first condition as $\int_0^1K_N(x)dx = \widehat{K_N}(0)$. Since $K_N$ is positive, we get the second condition. By Corollary \ref{bound_fejer_kernel}, we get the third condition.
+% \end{proof}
+
+% \begin{theorem}
+% Let $\{\Phi_n\}_{n\in\mathbb{N}}$ be an approximate identity. We have the following properties. 
+% \begin{enumerate}
+% \item For any $f\in\mathcal{C}^0(\mathbb{T})$, we have $\lim_{n\to\infty}\Vert \Phi_n\ast f - f\Vert_{L^\infty} = 0$.
+% \item For $1\leq p <\infty$ and  any $f\in L^p(\mathbb{T})$, we have $\lim_{n\to\infty}\Vert \Phi_n\ast f - f\Vert_{L^p} = 0$.
+% \item For any $\mu\in\mathcal{M}(\mathbb{T})$ and $f\in\mathcal{C}^0(\mathbb{T})$, we have $\lim_{n\to\infty}\int_0^1f(x) d(\Phi_n\ast \mu)(x) = \int_0^1f(x)d\mu(x)$.
+% \end{enumerate}
+% \label{approximate_identity_convergence}
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% With Theorem \ref{approximate_identity_convergence}, we get the following statements.
+% \begin{enumerate}
+% \item Trigonometric polynomials are dense in $\mathcal{C}^0(\mathbb{T})$ and $L^p(\mathbb{T})$ for $1\leq p <\infty$. 
+% \item $\{e_n(x)\}_{n\in\mathbb{Z}}$ is an orthonormal basis in $L^2(\mathbb{T})$. 
+% \item For any $f,g\in L^2(\mathbb{T})$, then $\langle f,g\rangle_{L^2} = \langle (\hat{f}(n))_{n\in\mathbb{Z}},(\hat{g}(n))_{n\in\mathbb{Z}}\rangle_{l^2}$.
+% \item For any $f\in L^2(\mathbb{T})$, we have $\Vert f\Vert_{L^2}^2 = \sum_{n\in\mathbb{Z}}\vert \hat{f}(n)\vert^2$.
+% \end{enumerate}
+% \end{corollary}
+
+% \begin{theorem}[Uniform Bounded Principle]
+% Let $X$ be a Banach space and $Y$ be a normed vector space. Let $\mathcal{F}$ be a collection of linear operators $T:X\to Y$. We have
+% \begin{equation*}
+% \forall x\in X, \sup_{T\in\mathcal{F}}T(x)<\infty\Rightarrow \sup_{T\in\mathcal{F}}\norm{T}<\infty.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proposition}[Carleson]
+% For any $1\leq p \leq \infty$, the following are equivalent.
+% \begin{enumerate}[1).]
+% \item For $p<\infty$ and any $f\in L^p(\mathbb{T})$, $\lim_{N\to\infty}\Vert S_N f-f\Vert_{L^p} \to 0$. For $p=\infty$, any $f\in L^p(\mathbb{T})$, $\lim_{N\to\infty}\Vert S_N f-f\Vert_{L^\infty} \to 0$.
+% \item The set $\{ S_N\}_{N\in\N}$ is uniformily bounded as linear operators on $L^p(\mathbb{T})$ for $p<\infty$ and $\mathcal{C}^0(\mathbb{T})$ for $p=\infty$.
+% \end{enumerate}
+% \end{proposition}
+
+% \begin{proof}
+% $1).\Rightarrow 2).$ is by the uniform bounded principle on $\{S_N\}_{N\in\N}$. The other direction is by the density of trigonometric polynomials in $L^p(\torus)$ for $p<\infty$ and for $p=\infty$, in $\mathcal{C}^0(\torus)$.
+% \end{proof}
+
+% \begin{proposition}
+% Let $p\in(1,\infty)$. $\{ S_N\}_{N\in\N}$ is uniformily bounded as linear operators on $L^p(\mathbb{T})$.
+% \end{proposition}
+
+% \begin{proof}
+% Let us define the operator on $L^p(\torus)$ such that$H$ such that 
+% \begin{equation*}
+% \widehat{Hf}(n) = -i\sgn(n)\hat{f}(n).
+% \end{equation*}
+% We now define
+% \begin{equation*}
+% Tf = {\frac 1 2}(1+iH)f.
+% \end{equation*}
+% By Fourier transform, we get
+% \begin{equation*}
+% \widehat{Tf}(n) = {\frac 1 2}(1+\sgn(n))\hat{f}(n).
+% \end{equation*}
+% Therefore, we get
+% \begin{equation*}
+% Tf(x) = \sum_{n=1}^\infty \hat{f}(n)e_n(x).
+% \end{equation*}
+% Notice that 
+% \begin{equation*}
+% S_Nf(x) = e_{-N-1}T(e_{N+1}f)(x)-e_{-N}T(e_{N}f)(x).
+% \end{equation*}
+% We get,
+% \begin{equation*}
+% \opNorm{S_N}{L^p} \leq 2\opNorm{T}{L^p}\leq 1+\opNorm{H}{L^p}<\infty.
+% \end{equation*}
+% \end{proof}
+
+% \begin{remark}
+% Above statement does not hold for $p=1,\infty$.
+% \end{remark}
+
+% \begin{definition}
+% The Carleson maximal function is a linear operator $C$ on the functionals on a topological space $X$ such that 
+% \begin{equation*}
+% f:X\to\mathbb{R}\mapsto [X\ni x\mapsto \sup_{n\in\N}\vert S_nf(x)\vert].
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% There is a sequence of probability measures $(\mu_N)_{N\in\N}$ on $\mathbb{T}$ such that for any $N\in\N$, we have
+% \begin{equation*}
+% \limsup_{n\to\infty}\vert S_n\mu_N(x)\vert(\ln N)^{-1} >0
+% \end{equation*}
+% holds almost everywhere.
+% \end{lemma}
+
+
+% \begin{lemma}
+% Let $(E_n)_{n\in\N}$ be a sequence of measurable sets of $\mathbb{T}$ such that 
+% \begin{equation*}
+% \sum_{n\in\N}\vert E_n\vert = \infty.
+% \end{equation*}
+% Then there is a sequence of point $(x_n)_{n\in\N}$ such that almost everywhere on $\mathbb{T}$, we have
+% \begin{equation*}
+% \sum_{n\in\N}\chi_{E_n}(x+x_n) = \infty.
+% \end{equation*}
+% \label{modified_borel_cantelli}
+% \end{lemma}
+
+% \begin{proof}
+% %later 5.15
+% \end{proof}
+
+% \begin{definition}
+% Let $m:\R^d\to\C$ be a bounded function. We define the multiplier operator $T_m$ for $\mathcal{S}(\R^d)$ corresponding to $m$ such that for $f\in\mathcal{S}(\R^d)$ we have
+% \begin{equation*}
+% T_mf(x) = \int_{\R^d}e^{2\pi ix\cdot \xi}\hat{f}(\xi)m(\xi)d\xi.
+% \end{equation*}
+% \end{definition}
+
+% \begin{theorem}
+% Let $(T_n)_{n\in\N}$ be a sequence of bounded linear operators on $L^1(\mathbb{T})$ which are translation invariant. We define
+% \begin{equation*}
+% \mathcal{M}f(x) =\sup_{n\in\N}\vert T_nf(x)\vert.
+% \end{equation*}
+% We may assume that for any trigonometric polynomial $f$, $\Vert \mathcal{M}f\Vert_{L^\infty}<\infty$.
+% \par If we have $\vert\{x\in\mathbb{T}\:|\: \mathcal{M}f(x)<\infty\}\vert >0$, then there is a constant $A>0$ such that for any $f\in L^1(\mathbb{T})$,
+% \begin{equation*}
+% \vert\{x\in\mathbb{T}\:|\: \mathcal{M}f(x)>\lambda\}\vert\leq{\frac A \lambda}\normL{f}{1}{\mathbb{T}}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Assume the statement is false. Therefore, there exists a sequence of functions $(f_i)_{i\in\N}$ and positive numbers $(\lambda_i)_{i\in\N}$ such that
+% \begin{equation*}
+% \forall i\in\N,\vert\{x\in\torus\:|\: \mathcal{M}f_i(x)>\lambda_i\}\vert > {\frac {2^i} {\lambda_i}}\normL{f_i}{1}{\torus}.
+% \end{equation*}
+% We may assume the following without loss of generality for each $i\in\N$.
+% \begin{enumerate}[i).]
+% \item $\normL{f}{1}{\torus}=1$.
+% \item $\mathcal{M}f_i(x) = \sup_{1\leq n\leq M_i}\vert T_nf_i(x)\vert$ for some $M_i$ by the definition of supremums.
+% \item By density, $f_i$ is a trigonometric polynomial.
+% \end{enumerate}
+% Let $E_i = \{x\in\torus\:|\:\sup_{1\leq n\leq M_i}\vert T_nf_i(x)\vert>\lambda_i\}$, then by the assumption $\vert E_i\vert > {\frac {2^i} {\lambda_i}}$. We also denote $m_i = \left\lfloor{\frac {\lambda_i} {2^i}}\right\rfloor$.
+% \par By Lemma \ref{modified_borel_cantelli} and counting $E_i$ with the multiplicity $m_i$, we get a sequence $\{x_{j,l}\}_{j\in\N,1\leq l\leq m_j}$ such that 
+% \begin{equation*}
+% \sum_{j\in\N}\sum_{l=1}^{m_j}\chi_{E_j}(x-x_{j,l}) = \infty
+% \end{equation*}
+% holds almost everywhere. Let us now define with $\delta_{j} = {\frac 1 {j^2m_j}}$,
+% \begin{equation*}
+% f(x) = \sum_{j\in\N}\sum_{l=1}^{m_j}\varepsilon_{j,l}\delta_{j}f_j(x-x_{j,l}),
+% \end{equation*}
+% and $\varepsilon_{j,l}\in\{\pm1\}$ to make sure that $\mathcal{M}f=\infty$ almost everywhere. Regardless of the signs, we have
+% \begin{equation*}
+% \normL{f}{1}{\torus} \leq \sum_{j\in\N}\sum_{l=1}^{m_j}\delta_j = \sum_{j\in\N}{\frac 1 {j^2}} <\infty.
+% \end{equation*}
+% Let $x\in\torus$ be such that $x$ belongs to infinitely many elements of $\{x_{j,l}+E_j\}_{j\in\N,1\leq l\leq m_j}$. We can take a function $l:\N\to\N$ such that $x$ belongs to the infinitely many of the sets
+% \begin{equation*}
+% \{E_j+x{j,l(j)}\}_{j\in\N}.
+% \end{equation*}
+% Since $(T_n)_{n\in\N}$ are all translation-invariant. 
+% \end{proof}
+
+% \begin{corollary}
+% If for any $f\in \LpT{1}$, $\{S_Nf\}_{n\in\N}$ converges almost everywhere, then for any $\lambda>0$, there is a constant $A$ such that
+% \begin{equation*}
+% \vert\{x\in\torus\:|\: \mathcal{C}f(x)>\lambda\}\vert\leq {\frac A \lambda}\normL{f}{1}{\torus}.
+% \end{equation*} 
+% \label{kolmogov_counter_example_lem1}
+% \end{corollary}
+
+% \begin{proof}
+% %later 5.19
+% \end{proof}
+
+% \begin{definition}
+% An element of $d$-dimensional torus $(\theta_1,\cdots,\theta_d)$ is said to be incremental if for any $(n_1,\cdots,n_d)\in\mathbb{Z}^d\backslash\{0\}$, we have
+% \begin{equation*}
+% n_1\theta_1+\cdots+n_d\theta_d \not\in\mathbb{Z}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% The orbit of an incremental elements in $\torus^d$ by scalar multiplication by integers is dense in $\torus^d$.
+% \end{proposition}
+
+% \begin{lemma}
+% There is a constant $C>0$ such that for any $N\in\N$, there exists a probability measure on $\torus$ such that
+% \begin{equation*}
+% \limsup_{n\in\N}{\frac {\vert S_n\mu_N(x)\vert} {\ln N}}\geq C
+% \end{equation*}
+% holds for almost everywhere.
+% \end{lemma}
+
+% \begin{proof}
+% For $N\in\N$ we set $(x_{i,N})_{1\leq i\leq N}$ to be elements of $\torus$ such that 
+% \begin{equation*}
+% \left\vert x_{i,N}-{\frac i N}\right\vert\leq{\frac 1 {N^2}}.
+% \end{equation*}
+% Also assume they are incremental. By the property of incremental elements, $x\in \torus$, we have $(x-x_{i,N})_{1\leq i\leq N}$ is also incremental almost everywhere. Now consider the orbit
+% \begin{equation*}
+% \{(2n+1)(x-x_{i,N})\mod{\Z^d}\}_{n\in\Z,1\leq i\leq N}.
+% \end{equation*}
+% is dense in $\torus$ therefore for infinitely mane $n\in\Z$, we have
+% \begin{equation*}
+% \sin((2n+1)\pi(x-x_{i,N}))\geq{\frac 1 2}.
+% \end{equation*}
+
+% %later 5.22
+% \end{proof}
+
+% \begin{theorem}
+% There is $f\in \LpT{1}$ such that $\{S_Nf\}_{n\in\N}$ does not converge almost everywhere.
+% \end{theorem}
+
+% \begin{proof}
+% For each $N\in\N$, we set $\lambda_N = C\ln N$ we get from the above lemma we get 
+% \begin{equation*}
+% \{x\in\R^d\:|\: \mathcal{C}\mu_N(x)>\lambda_N\}=\R^d
+% \end{equation*} 
+% holds almost everywhere. Using Lemma \ref{kolmogov_counter_example_lem1}, we get the statement.
+% \end{proof}
+
+% \subsection{Application to Some Boundary Value Problems}
+
+
+% \begin{definition}
+% The Poisson kernel is a collection of functionals $\{P_r\}_{r>1}$, such that 
+% \begin{equation*}
+% P_r(t) = {\frac {1-r^2} {\vert r-e^{2\pi i t}\vert}}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% The Poisson kernel is a approximate identity.
+% \end{proposition}
+
+% \begin{proof}
+% %later 5.22
+% \end{proof}
+
+% \begin{theorem}
+% Given $f\in\LpT{p}$, there is an analytic function $F:\mathbb{D}\to\mathbb{C}$ such that there is a real valued function $g:\torus\to\mathbb{R}$ and
+% \begin{equation*}
+% F|_\torus = f+ig.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 5.22
+% \end{proof}
+
+% \subsection{Schwartz Spaces}
+
+% \begin{definition}
+% A smooth complex functional $f:\mathbb{R}^d\to \mathbb{C}$ is called a Schwartz function if for any $\alpha,\beta\in(\mathbb{N}\cup\{0\})^d$ we have
+% \begin{equation*}
+% \sup_{x\in\mathbb{R}^d}\vert x^\alpha \partial_\beta f(x)\vert\leq\infty.
+% \end{equation*}
+% The space of Schwartz functions over a space $X$ is denoted by $\mathcal{S}(X)$ and is called the Schwartz class over $X$.
+% \end{definition}
+
+% \begin{example}
+% The following functions belong to Schwartz classes.
+% \begin{enumerate}
+% \item $x^me^{-a\vert x\vert^2}$ where $a>0$ and $m\geq 0$. More generally, let $p\in\mathbb{C}[x]$, $p(x)e^{-a\vert x\vert^2}$.
+% \item Any smooth and compactly supported functions.
+% \end{enumerate}
+% \end{example}
+
+% \begin{proposition}
+% We can introduce a topology in $\mathcal{S}(\mathbb{R}^d)$ and make it into a topological vector space. Such topology can be given by the sequential convergence criteria. Precisely, a sequence $(f_n)_{n\in\mathbb{N}}$ in $\mathcal{S}(\mathbb{R}^d)$ converges to some $f$ if 
+% \begin{equation*}
+% \forall \alpha,\beta\in(\mathbb{N}\cup\{0\})^d,\:\normL{x^\alpha\partial_\beta(f_n-f)}{\infty}{\mathbb{R}^d}\to0.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{corollary}
+% The basis of such topology on $\mathcal{S}(\mathbb{R}^d)$ can be given by 
+% \begin{equation*}
+% \{f\in\mathcal{S}(\mathbb{R}^d\:|\: \forall\alpha,\beta\in(\mathbb{N}\cup\{0\})^d \normL{x^\alpha\partial_\beta(f-g)}{\infty}{\mathbb{R}^d}\leq C\}
+% \end{equation*}
+% where $g$ and $C$ runs through all $\mathcal{S}(\mathbb{R}^d)$ and positive numbers.
+% \end{corollary}
+
+% \begin{definition}
+% A linear continuous operator $T:\mathcal{S}(\mathbb{R}^d)\to\mathbb{C}$ is called a tempered distribution. The space of tempered distributions is denoted by $\mathcal{S}'(\mathbb{R}^d)$.
+% \end{definition}
+
+% \begin{definition}
+% A sequence of tempered distributions $(\Lambda_n)_{n\in\mathbb{N}}$ converges to another tempered distribution $\Lambda$ in weak-$*$ topology if for any $f\in\mathcal{S}(\mathbb{R}^d)$, we have
+% \begin{equation*}
+% \lim_{n\to\infty}\langle\lambda_n,f\rangle =\langle\Lambda,f\rangle.
+% \end{equation*}
+% \end{definition}
+
+% \begin{example}
+% The following operators are tempered distributions.
+% \begin{enumerate}
+% \item For any $\varphi\in\mathcal{S}(\mathbb{R}^d)$, the operator defined by $Tf = \int_{\mathbb{R}^d}\varphi fdx$.
+% \item For any $x\in\mathbb{R}^d$, we define $\delta_x\varphi = \varphi(x)$.
+% \item Let $k\in\mathbb{N}\cup\{0\}$, then $\langle\Lambda^k,f\rangle = f^{(k)}(0)$ is a tempered distribution.
+% \item For any $\mu\in\mathcal{M}(\mathbb{R}^d)$, we have $\langle\Lambda_\mu,f\rangle = \int_{\mathbb{R}^d} f(y)d\mu(y) = \langle\mu,f\rangle$, is a tempered distribution.
+% \end{enumerate}
+% \end{example}
+
+% \begin{lemma}
+% Let $\Lambda:\mathcal{S}(\mathbb{R}^d)\to\mathbb{C}$ be a linear functional. It is continuous if and only if there is $N\in\mathbb{N}$ and $C>0$ such that for any $f\in\mathcal{S}(\mathbb{R}^d)$, we have
+% \begin{equation*}
+% \langle\Lambda,f\rangle\leq C\sum_{\vert\alpha\vert,\vert\beta\vert\leq N}\normL{x^\alpha\partial_\beta f}{\infty}{\mathbb{R}^d}.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{definition}
+% Let $\Lambda:\mathcal{S}(\mathbb{R}^d)\to\mathbb{R}$ be a tempered distribution. Then we define 
+% \begin{equation*}
+% \langle\Lambda^{(k)},f\rangle = \langle\Lambda,f^{(k)}\rangle.
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% Let $\varphi\in\mathcal{S}(\mathbb{R}^d)$.\\
+% \par The Fourier transform of $\varphi$ is 
+% \begin{equation*}
+% \hat{\varphi}(\xi) = \int_{\mathbb{R}^d}\varphi(x)e^{-2\pi i x\cdot\xi}dx.
+% \end{equation*}
+% \par The Inverse Fourier transform of $\varphi$ is 
+% \begin{equation*}
+% \check{\varphi}(x) = \int_{\mathbb{R}^d}\varphi(\xi)e^{2\pi i x\cdot\xi}d\xi.
+% \end{equation*}
+% \end{definition}
+
+% \begin{theorem}
+% The Fourier and Inverse Fourier transforms are both automorphisms of $\mathcal{S}(\mathbb{R}^d)$ which are inverse to one another.
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $T\in\mathcal{S}(\mathbb{R}^d)$. We define the Fourier transform $\hat{T}$ and Inverse Fourier transforms $\check{T}$ by
+% \begin{equation*}
+% \langle \hat{T},f\rangle = \langle T,\hat{f}\rangle,\quad \langle \check{T},f\rangle = \langle T,\check{f}\rangle.
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% The signal of Hilbert transform is $w_0:\mathcal{S}(\mathbb{R})\to\mathcal{C}$ such that 
+% \begin{equation*}
+% \langle w_0,f\rangle = {\frac 1 \pi}\lim_{\varepsilon\to 0}\left(\int_{\varepsilon\leq\vert x\vert\leq1}{\frac {f(x)} x}dx + {\frac 1 \pi}\int_{1\leq \vert x\vert}{\frac {f(x)} x}dx\right).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% $\langle w_0,\cdot\rangle$ is a tempered distribution.
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $p\in[1,\infty)$ and $f\in L^p(\mathbb{R})$. For a positive number $\varepsilon$, we define the truncated Hilbert transform at height $\varepsilon$ to be
+% \begin{equation*}
+% H^{(\varepsilon)}f(x) = {\frac 1 \pi}\int_{\varepsilon\leq\vert y \vert}{\frac {f(x-y)} y}dy = {\frac 1 \pi}\int_{\varepsilon\leq\vert x-y \vert}{\frac {f(y)} {x-y}}dy.
+% \end{equation*}
+% \end{definition}
+
+% \begin{remark}
+% $H^{(\varepsilon)}$ is well-defined by Hölder's inequality.
+% \end{remark}
+
+% \begin{definition}
+% Let $p\in[1,\infty)$ and $f\in L^p(\mathbb{R})$. The Hilbert transform is 
+% \begin{equation*}
+% Hf(x) = \lim_{\varepsilon>0}H^{(\varepsilon)}f(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% For arbitrary $\varphi\in\mathcal{S}(\mathbb{R})$, we have
+% \begin{equation*}
+% H\varphi(x) = (w_0\ast \varphi)(x).
+% \end{equation*}
+% \label{hilbert_transform_covolution}
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{lemma}
+% \begin{equation*}
+% \int_\mathbb{R} {\frac {\sin(bx)} x}dx = \pi\sgn(b).
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{lemma}
+% \begin{equation*}
+% \langle \hat{w_0},\varphi\rangle = \int_\mathbb{R}\varphi(x)(-i\sgn(x))dx.
+% \end{equation*}
+% \label{w_0_inner}
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% Let $p\in[1,\infty)$ and $f\in L^p(\mathbb{R})$.
+% \begin{equation*}
+% Hf(x) = \int_\mathbb{R}w_0(x-\xi)f(\xi)d\xi.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+
+% \begin{corollary}
+% The Hilbert transform is an isometry. In particular, $H^2 = -I$.
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{theorem}
+% $\mathcal{S}(\mathbb{R}^d)$ is dense in any $L^p(\mathbb{R}^d)$ space.
+% \end{theorem}
+
+% \subsection{Hardy-Littlewood Maximal Functions}
+
+% \begin{definition}
+% Let $f\in L^1(\mathbb{R}^d)$. For $x\in \mathbb{R}^d$, we define the set of all balls  $\mathcal{B}(x)$ containing $x$. The Hardy-Littlewood maximal function of $f$ is 
+% \begin{equation*}
+% f^*(x) = \sup_{B\in\mathcal{B}(x)}{\frac 1 {\vert B\vert}}\int_B \vert f(y)\vert dy.
+% \end{equation*}
+% \end{definition}
+
+% \begin{remark}
+% Even though $f$ is of $L^1$, $f^*$ might not be of $L^1$.
+% \end{remark}
+
+% \begin{lemma}
+% Let $\{B_i\}_{i=1,\cdots,n}$ be a collection of open balls in $\mathbb{R}^d$. Then there is a subcollection $\{B_{i_1},\cdots,B_{i_k}\}$ such that
+% \begin{equation*}
+% \left\vert \bigcup_{i=1}^n B_i\right\vert \leq 3^d\sum_{j=1}^k \vert B_j\vert.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{theorem}[Hardy-Littlewood]
+% Let $f\in L^1(\mathbb{R}^d)$. $f^*$ is a measurable function, which is finite almost everywhere. In particular, we have the following inequality.
+% \par For any $\alpha>0$, 
+% \begin{equation*}
+% \vert\{x\in\mathbb{R}^d\:|\: f^*(x)>\alpha\}\vert \leq {\frac {3^d} \alpha}\Vert f\Vert_{L^1}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{theorem}[Lebesgue]
+% Let $f\in L^1_{\text{loc}}(\mathbb{R}^d)$. We have
+% \begin{equation*}
+% \lim_{r\to 0} {\frac 1 {\vert B(x,r)\vert}}\int_{B(x,r)} f(y)dy = f(x).
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% Let $f\in L^1_{\text{loc}}(\mathbb{R}^d)$. We have $f^*(x)\geq \vert f(x)\vert$ almost everywhere.
+% \end{corollary}
+
+% \begin{definition}
+% Let $f\in L^1_{\text{loc}}(\mathbb{R}^d)$. The Lebesgue set $\mathcal{L}(f)$ of $f$ is 
+% \begin{equation*}
+% \mathcal{L}(f) = \{x\in\mathbb{R}^d\:|\: \lim_{r\to 0} {\frac 1 {\vert B(x,r)\vert}}\int_{B(x,r)} \vert f(y)-f(x)\vert dy = 0\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{remark}
+% If $f:\mathbb{R}^d\to\mathbb{R}$ is continuous at some point $x$. Then $x\in\mathcal{L}(f)$. 
+% \end{remark}
+
+% \begin{theorem}
+% Let $f\in L^1_{\text{loc}}(\mathbb{R}^d)$. $\mathbb{R}^d\backslash\mathcal{L}(f)$ has measure $0$.
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \subsection{Ergodicity}
+
+% \begin{definition}
+% Let $(X,\mathcal{A},\mu)$ be a probability space. A measure preserving system is a pair $(X,T)$, where $T:X\to X$ is a measurable function whose inverse is also measurable and for any$A\in\mathcal{A}$,
+% \begin{equation*}
+% \mu(T^{-1}(A)) = \mu(A).
+% \end{equation*}
+% \end{definition}
+
+% \begin{example}[Torus rotation]
+% For $\alpha\in\mathbb{R}^d$, define $T:\mathbb{T}^d\to\mathbb{T}^d$  to be
+% \begin{equation*}
+% T(x) = x+\alpha\mod\mathbb{Z}^d.
+% \end{equation*}
+% $(\mathbb{T}^d,T)$ is a measure preserving system.
+% \end{example}
+
+% \begin{example}[Bernoulli System]
+% Let $X=\{0,1\}^{\mathbb{Z}}$. For $\mathbb{P}(A) = {\frac {\vert A\vert} 2}$ for $A\subseteq\{0,1\}$. We define $\mu = \mathbb{P}^{\bigoplus\mathbb{Z}}$. We define
+% \begin{equation*}
+% T((x_n)_{n\in\mathbb{Z}}) = (0,x_1,x_2,\cdots).
+% \end{equation*}
+% $(X,T)$ is a measure preserving system.
+% \end{example}
+
+% \begin{definition}
+% Let $(X,T)$ be a measure preserving system. The Koopmanization is an operator $u_T:L^2(X)\to L^2(X)$, such that $u_T(f) = f\circ T$.
+% \end{definition}
+
+% \begin{lemma}
+% For any measurable set $A$, we have
+% \begin{equation*}
+% \int_X \chi_A\circ Td\mu = \mu(A).
+% \end{equation*}
+% In particular, we have
+% \begin{equation*}
+% \int_Xu_T(f)d\mu = \int_Xfd\mu,
+% \end{equation*}
+% and
+% \begin{equation*}
+% \int_X\vert u_T(f)\vert^2d\mu = \int_X\vert f\vert^2d\mu
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $(X,T)$ be a measure preserving system. It is said to be ergodic if for any $A\in\mathcal{A}$, 
+% \begin{equation*}
+% T(A) = A\:a.e.\:\Rightarrow \mu(A) \in\{0,1\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% $(X,T)$ is ergodic if and only if for any $f\in L^2(X)$, $u_T(f) = f$ implies $f$ is continuous.
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}
+% Let $\mathbb{H}$ be a Hilbert space. Any non-empty convex closed subset of $\mathbb{H}$ contains a unique element whose norm is the smallest in the subset.
+% \end{proposition}
+
+% \begin{theorem}[Von Neumann]
+% Let $(X,T)$ be an ergodic measure preserving system. For any $f\in L^2(X)$, we have
+% \begin{equation*}
+% \lim_{N\to\infty} {\frac 1 N} \sum_{n=0}^{N-1}f\circ T^n = \mathbb{E}(f).
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Let us consider $C=\overline{\conv\{f\circ T^n\:|\: n\in\N\cup\{0\}\}}$. It is a non-empty closed convex set, thus has a unique element $g$ with minimal norm. By the ergodicity, we have $\expect(C) = \{\expect{f}\}$.  
+% \end{proof}
+
+% \begin{theorem}[Von Neumann]
+% Let $(X,T)$ be an ergodic measure preserving system. For any $f\in L^1(X)$, we have
+% \begin{equation*}
+% \lim_{N\to\infty} {\frac 1 N} \sum_{n=0}^{N-1}f\circ T^n = \mathbb{E}(f),
+% \end{equation*}
+% almost everywhere.
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $(X,T)$ be a measure preserving system where $X$ is $\sigma$-finite and $f\in L^1(X)$. We define the maximal ergodic function $E(f)$ of $f$ to be
+% \begin{equation*}
+% E(f)(x) = \sup_{N\in\mathbb{N}}{\frac 1 N}\sum_{i=0}^{N-1}\vert f\circ T^n(x)\vert.
+% \end{equation*}
+% \end{definition}
+
+% \begin{theorem}
+% Let $(X,T)$ be a measure preserving system where $X$ is $\sigma$-finite and $f\in L^1(X)$. If $f$ is non-negative then we have
+% \begin{enumerate}[1).]
+% \item $E(f)$ is almost everywhere finite.
+% \item For any $\alpha>0$, we have $\vert\{x\in X\:|\: E(f)(x)>\alpha\}\vert \leq {\frac 6 \alpha}\Vert f\Vert_{L^1}$.
+% \end{enumerate}
+% \end{theorem}
+
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \section{Generalized Maximal Functions}
+
+% \subsection{Maximal Functions}
+
+% \begin{definition}
+% Let $(X,d)$ be a metric space, $\mu$ be a doubling measure on $X$ which is not everywhere $0$, and for each point $x\in X$, we define $\mathcal{B}(x)$ to be the collection of all balls containing $x$. We define for a functional $f:X\to\mathbb{R}$,
+% \begin{equation*}
+% \mathcal{M}_\mu f(x) = \sup_{B\in\mathcal{B}(x)}{\frac 1 {\mu(B)}}\int_B\vert f(y)\vert d\mu(y)
+% \end{equation*}
+% \end{definition}
+
+% \begin{corollary}
+% Let $f\in L^1(X)$. Then we have
+% \begin{enumerate}[1).]
+% \item There is $C>0$ such that $\mu(\{x\in\mathbb{R}^d\:|\: \mathcal{M}_\mu f(x)>\lambda\})\leq {\frac C \lambda}\Vert f\Vert_{L^1(\mathbb{R}^d,\mu)}$.
+% \item For any $1<p<\infty$, there is a constant $C_p>0$ only depending on $p$, such that $\Vert \mathcal{M}_\mu f\Vert_{L^p(\mathbb{R}^d,\mu)}\leq C_p\Vert f\Vert_{L^p(\mathbb{R}^d,\mu)}$.
+% \end{enumerate}
+% \label{maximal_function_p_ineq}
+% \end{corollary}
+
+% \begin{proof}
+% Replicating the proofs for Hardy-Littlewood maximal functions.
+% \end{proof}
+
+% \begin{definition}
+% A measure is said to be absolutely continuous with respect to the Lebesgue measure if there exists non-negative measurable function $w$ such that 
+% \begin{equation*}
+% \mu(A) = \int_Aw(x)dx.
+% \end{equation*}
+% We will denote $\mu(A)=w((A)$ and $L^p(X,\mu) = L^p(w)$.
+% \end{definition}
+
+% \begin{proposition}
+% For any $1<p<\infty$, we have $\mathcal{M}_w(L^p(w))\subseteq L^p(w)$. 
+% \end{proposition}
+
+% \begin{proof}
+% Let $f\in L^p(w)$. 
+% \begin{equation*}
+% {\frac 1 {\vert B\vert}}\int_B\vert f(y)\vert dy 
+% \end{equation*}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $p\in(1,\infty)$ and $w$ be a non-negative measurable function. We denote $\mathcal{B}$ as the collection of all balls in $\mathbb{R}^d$. The $A_p$-characteristic of $w$ is 
+% \begin{equation*}
+% [w]_{A_p} = \sup_{B\in\mathcal{B}}\left({\frac 1 {\vert B\vert}}\int_B w(x)dx\right)\left({\frac 1 {\vert B\vert}}\int_B w(x)^{-{\frac {p'} p}}\right)^{{\frac p {p'}}}.
+% \end{equation*}
+% If $[w]_{A_p}$ is finite we say $w$ is of $A_p$-class.
+% \end{definition}
+
+% \begin{theorem}
+% Let $p\in(1,\infty)$ and $w$ be a non-negative measurable function. Then the following are equivalent.
+% \begin{enumerate}[1).]
+% \item There is $C>0$ such that $\Vert\mathcal{M}f\Vert_{L^p(w)}\leq C\normL{f}{p}{w}$.
+% \item There is $C>0$ such that for any $\lambda>0$, we have $\vert\{x\in\mathbb{R}^d\:|\: \mathcal{M}f(x)>\lambda\}\vert\leq {\frac C {\lambda^p}}\normL{f}{p}{w}^p$.
+% \item There is $C$ such that for any non-negative measurable function $f$, $\left({\frac 1 {\vert B\vert}}\int_Bf(x)dx\right)\leq C{\frac 1 {w(B)}}\int_B f(x)^pw(x)dx$.
+% \item There is $C$ such that $[w]_{A_p}\leq C$.
+% \end{enumerate}
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% Let $\mu$ be a measure on $\mathbb{R}^d$. $\mu$ is said to be doubling if for any ball $B$, there is $c>0$ such that 
+% \begin{equation*}
+% \mu(2B) \leq c\mu(B).
+% \end{equation*}
+% \end{definition}
+
+% \begin{remark}
+% Any doubling measure is regular (ie. there is no $\delta$-measure or evenly separated).
+% \end{remark}
+
+% \begin{corollary}
+% For any $w\in A_p$, $w$ is a doubling measure.
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% We define the set of dyadic cubes in $\mathbb{R}^d$ to be
+% \begin{equation*}
+% \mathcal{D} = \{2^k\underline{l}+[0,2^k)^d\:|\: (\underline{l},k)\in\mathbb{Z}^{d+1}\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% Let $Q_1,Q_2\in\mathcal{D}$. $Q_1\cap Q_2\not=\emptyset$ if and only if one fully contains the other.
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{definition}
+% We define $\pi:\mathcal{D}\to\mathcal{D}$ to be such that for any $Q\in\mathcal{D}$, $\pi(Q)$ is the smallest dyadic set containing $Q$.
+% \end{definition}
+
+% \begin{definition}
+% Let $f:\mathbb{R}^d\to\mathbb{R}$ be a functional. We define the dyadic maximal function as such that
+% \begin{equation*}
+% \mathcal{M}_{\Delta}f(x) = \sup_{Q\in\mathcal{D},x\in Q}{\frac 1 {\vert Q\vert}}\int_Q\vert f(y)\vert dy.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% Let $w\in A_p$ and $1<p<\infty$ then $\mathcal{M}_\Delta(L^p(w))\subset L^p(w)$.
+% \end{lemma}
+
+% \begin{definition}[Calderón-Zygmund]
+% Let $f\in L^1(\mathbb{R}^d)$ and $\lambda>0$. The Calderón-Zygmund of $f$ at height $\lambda$ is $f=g+b$ for some $g,b\in L^1(\mathbb{R}^d)$ such that $\vert g\vert$ is bounded by $\lambda$ almost everywhere. Furthermore, there exists $\mathcal{B}\subset\mathcal{D}$ such that
+% \begin{equation*}
+% b = \sum_{Q\in\mathcal{B}}f\chi_Q,
+% \end{equation*}
+% and $\mathcal{B}$ satisfies
+% \begin{enumerate}[i).]
+% \item $\lambda<{\frac 1 {\vert Q\vert}}\int_Q \vert f(y)\vert dy\leq 2^d\lambda$.
+% \item $\sum_{Q\in\mathcal{B}}\vert Q\vert\leq {\frac {\normL{f}{1}{\mathbb{R}^d}} \lambda}$.
+% \item $\bigcup_{Q\in\mathcal{B}} Q = \{x\in \mathbb{R}^d\:|\: \mathcal{M}_\Delta f(x)>\lambda\}$. 
+% \end{enumerate}
+% \end{definition}
+
+% \begin{theorem}
+% The Calderón-Zygmund of $f$ at height $\lambda$ exists for arbitrary $f\in L^1(\mathbb{R}^d)$ and $\lambda>0$.
+% \end{theorem}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}
+% The Hilbert transform is a bounded linear operator from $L^1(\mathbb{R}$ to $L^{1,\infty}(\mathbb{R})$.
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% For any $p\in(1,\infty)$, the Hilbert transform is a bounded linear operator on $L^p(\mathbb{R})$.
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \section{Fourier Transform}
+
+% \subsection{Fourier Transform of Measures}
+
+% \begin{definition}
+% Let $f\in L^1(\mathbb{R}^d)$. The Fourier transform of $f$ is 
+% \begin{equation*}
+% \hat{f}(\xi) = \int_{\mathbb{R}^d}f(x)e^{-2\pi i x\cdot\xi} dx.
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% Let $\mu\in\mathcal{M}(\mathbb{R}^d)$. We define
+% \begin{equation*}
+% \hat{\mu}(\xi) = \int_\mathbb{R} e^{-2\pi i x\cdot\xi}d\mu(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}[Riemann-Lebesgue]
+% We have $\mathcal{F}:\mathcal{M}(\mathbb{R}^d)\to L^\infty(\mathbb{R}^d)$. Moreover, $\mathcal{F}(\mu)$ is continuous if and only if $\mu= f(x)dx$ for some $f\in L^1(\mathbb{R}^d)$.
+% \label{riemann-lebesgue}
+% \end{lemma}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{notation}
+% By the density, we can extend the Fourier transform to any $L^p(\mathbb{R}^d)$. In order to clarify that this is an extension. We define for $f\in L^p(\mathbb{R}^d)$ and $(\varphi_n)_{n\in\mathbb{N}}$ such that $\varphi_n\to f$. $\mathcal{F}(f) = \lim_{n\to\infty}\hat{\varphi_n}$.
+% \end{notation}
+
+% \begin{proposition}
+% Let $f\in\mathcal{S}(\mathbb{R}^d)$ and $\alpha,\beta\in(\mathbb{N}\cup\{0\})^d$ we have the following statements.
+% \begin{enumerate}
+% \item $\widehat{x^\alpha f}(\xi) = \left({\frac {-\partial} {2\pi i}}\right)^\alpha\hat{f}(\xi)$.
+% \item $\widehat{\partial_\beta f}(\xi) = (2\pi i \xi)^\beta\hat{f}(\xi)$.
+% \item Let $A:\mathbb{R}^d\to\mathbb{R}^d$ be an invertible linear transformation. We have $\widehat{f\circ A}(\xi) = {\frac 1 {\det A}}\hat{f}((A^{-1})^*\xi)$.
+% \item $\widehat{f(\lambda\:\cdot)}(\xi) = {\frac 1 {\lambda^d}}\hat{f}\left({\frac \xi {\overline{\lambda}^d}}\right)$.
+% \item Let $\tau_t$ be a translation by $t$. Then $\widehat{\tau_t f}(\xi) = e^{-2\pi i \xi\cdot t}\hat{f}(\xi)$.
+% \end{enumerate}
+
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}
+% The Fourier transform is continuous between $\mathcal{S}(\mathbb{R}^d)$ and itself.
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}
+% Let $f,g\in L^1(\mathbb{R}^d)$ then $\widehat{f\ast g} = \hat{f}\hat{g}$.
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}
+% Let $f,g\in \mathcal{S}(\mathbb{R}^d)$ then $\langle \hat{f},g\rangle = \langle f,\hat{g}\rangle$.
+% \end{proposition}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% \begin{equation*}
+% \hat{\delta_0} = 1.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{corollary}
+% Let $f\in\mathcal{C}^k_C(\mathbb{R}^d)$. Then there is $C>0$ such that for any $\xi\in\mathbb{R}^d$, $\vert\hat{f}(\xi)\vert\leq{\frac {C} {(1+\vert\xi\vert)^k}}$.
+% \end{corollary}
+
+% \begin{proof}
+% %later
+% \end{proof}
+
+% \begin{proposition}In $\mathbb{R}^d$ for any $d\in\N$, we have
+% \begin{equation*}
+% \widehat{e^{-\pi\vert x\vert^2}} = e^{-\pi\vert \xi\vert^2}.
+% \end{equation*}
+% \end{proposition}
+
+
+% \begin{proof}
+% First we consider the case where $d=1$. Observe that 
+% \begin{equation*}
+% \int_{\R}e^{-\pi x^2}e^{-2\pi i x\xi}dx = \int_{\R}e^{-\pi (x+i\xi)^2-\pi\xi^2}dx=e^{-\pi\xi^2}\lim_{R\to\infty}\int_{-R}^Re^{-\pi (x+i\xi)^2}dx.
+% \end{equation*}
+% Therefore, we will show that the limit goes to $1$. Consider a loop $\gamma$ going the rectangle below clockwise.
+% \begin{center}
+% \begin{tikzpicture}
+%   \draw[->] (-1.5,0) -- (1.5,0);
+%   \draw[->] (0,-1.5) -- (0,1.5);
+%   \draw (1,0)node[above]{$R$} -- (1,-0.6)--(-1,-0.6)node[midway,below]{$-i\xi$}--(-1,0)node[above]{$-R$}--cycle;
+% \end{tikzpicture}
+% \end{center}
+% Let us denote the pathes following vertical edges by $\gamma_1$ and the bottom edge $\gamma_2$. Then we have
+% \begin{equation*}
+% \int_{-R}^Re^{-\pi (x+i\xi)^2}dx=\int_{\gamma}e^{-\pi (z+i\xi)^2}dz-\int_{\gamma_1}e^{-\pi (z+i\xi)^2}dz-\int_{\gamma_2}e^{-\pi (z+i\xi)^2}dz.
+% \end{equation*}
+% Since the inside is analytic, the first term vanishes.Let us examine the vertical parts.
+% \begin{equation*}
+% \left\vert\int_{-\xi}^0e^{-\pi (R+iy+i\xi)^2}dy\right\vert\leq\int_{-\xi}^0\left\vert e^{-\pi (R+iy+i\xi)^2}\right\vert dy\leq \int_{-\xi}^0 e^{-\pi R^2}e^{\pi(y+\xi)^2}dy. 
+% \end{equation*}
+% Thus the integral is bounded by $e^{-\pi R^2}$ with some constant depending on $\xi$. 
+% For the second term, we can change the variable $x\to y-i\xi$ where $y$ ranging $[-R,R]$. Thus the integral is bounded by
+% \begin{equation*}
+% \lim_{R\to\infty}\int_{-R}^Re^{-\pi z^2}dz=1.
+% \end{equation*}
+% We conclude the statement holds for $d=1$. For the general case, we observe that 
+% \begin{equation*}
+% e^{-\pi\sum_{i=1}^d x_i^2}e^{-2\pi i x\cdot\xi}dx = \prod_{i=1}^d e^{-\pi x_i^2}e^{-2\pi i x_i\xi_i}.
+% \end{equation*}
+% \end{proof}
+
+% \begin{lemma}
+% For arbitrary $\varepsilon>0$, we define, 
+% \begin{equation*}
+% \Phi_\varepsilon(t)={\frac 1 {\varepsilon^d}}e^{-\pi\left({\frac t \varepsilon}\right)^2}
+% \end{equation*}
+% is an approximate identity.
+% \end{lemma}
+
+% \begin{proof}
+% The first and the second conditions are clear.
+% %later need to show the third 5.8
+% \end{proof}
+
+% \begin{proposition}
+% The Fourier transform is a homeomorphism between the Schwartz class and itself.
+% \end{proposition}
+% \begin{proof}
+% Let us denote the Fourier transform and the inverse Fourier transform by $\mathcal{F},\mathcal{G}$, respectively. First, we prove that they are the inverse of one another. In other words, for any $f\in\mathcal{S}(\R^d)$, we have
+% \begin{equation*}
+% \mathcal{G}\mathcal{F}f=\mathcal{F}\mathcal{G}f=f.
+% \end{equation*}
+% Let $f\in\mathcal{S}(\R^d)$, by using dominated convergence theorem, we have
+% \begin{equation*}
+% \mathcal{G}\mathcal{F}f(x) = \lim_{\varepsilon\to0}\int_{\R^d}e^{2\pi ix\cdot\xi}\int_{\R^d}f(y)e^{-2\pi i y\cdot\xi}dye^{-\varepsilon^2\pi\vert\xi\vert^2}d\xi.
+% \end{equation*}
+% Using Fubini's theorem, we get,
+% \begin{equation*}
+% \mathcal{G}\mathcal{F}f(x) = \lim_{\varepsilon\to0}\int_{\R^d}f(y)\int_{\R^d}f(y)e^{-2\pi i (y-x)\cdot\xi}e^{-\varepsilon^2\pi\vert\xi\vert^2}d\xi dy.
+% \end{equation*}
+% By the previous proposition, we get
+% \begin{equation*}
+% \mathcal{G}\mathcal{F}f(x) =  \lim_{\varepsilon\to0}\int_{\R^d}f(y){\frac 1 {\varepsilon^d}}e^{-\pi\left\vert{\frac {y-x} {\varepsilon}}\right\vert^2}dy.
+% \end{equation*}
+% Let $\Phi_\varepsilon(t)={\frac 1 {\varepsilon^d}}e^{-\pi\left({\frac t \varepsilon}\right)^2}$, then
+% \begin{equation*}
+% \mathcal{G}\mathcal{F}f(x) =  \lim_{\varepsilon\to0}(f\ast \Phi_\varepsilon)(x).
+% \end{equation*}
+% Since $\Phi_\varepsilon$ is an approximate identity, we get the limit equals to $f$. Similar for $\mathcal{F}\mathcal{G}f(x) = f(x)$.
+% \end{proof}
+
+% \begin{remark}
+% Recall that for a Hilbert space $(H,\langle\cdot,\cdot\rangle)$ over $\R$, the polarization identity is such that for $x,y\in H$,
+% \begin{equation*}
+% \langle x,y\rangle = \norm{x+y} - \norm{x}-\norm{y}.
+% \end{equation*}
+% \end{remark}
+
+% \begin{proposition}[Plancherel]
+% Let $f,g\in \mathcal{S}(\R^d)$, then we have the following statements.
+% \begin{equation*}
+% \langle f,g\langle_{L^2(\R^d)} = \langle \hat{f},\hat{f}\rangle_{L^2(\R^d)},\quad \norm{f}_{L^2(\R^d)}=\norm{\hat{f}}_{L^2(\R^d)}.
+% \end{equation*}
+% \label{Plancherel}
+% \end{proposition}
+
+% \begin{proof}
+% Using the remark, these two statements are equivalent. Therefore, we examine the latter one. By the previous proposition and Fubini, we have
+% \begin{align*}
+% \int_{\R^d}f\overline{f}dx = \int_{\R^d}\hat{\check{f}}\overline{f}dx =  \int_{\R^d}\check{f}\hat{\overline{f}}dx .
+% \end{align*}
+% Notice that
+% \begin{equation*}
+% \hat{\overline{f}}(\xi) = \int_{\R^d}\overline{f(x)}e^{-2\pi i x\cdot \xi}dx =  \overline{\int_{\R^d} f(x)e^{-2\pi i x\cdot (-\xi)}}dx = \overline{\hat{f}(-\xi)}.
+% \end{equation*}
+% Furthermore, 
+% \begin{equation*}
+% \check{f}(\xi) = \hat{f}(-\xi).
+% \end{equation*}
+% We conclude the statement.
+% \end{proof}
+
+% \begin{corollary}
+% The Fourier transform on the Schwartz class extends to $L^2(\mathbb{R}^d)$ which is a unitary operator. In other words, the extension is a surjective and inner products preserving operator.
+% \end{corollary}
+
+% \begin{proof}
+% The Fourier transform is a unitary operator on $\mathcal{S}(\R^d)$. By the density of $\mathcal{S}(\R^d)$ in $L^2(\R^d)$, we conclude that we have an extension.
+% \end{proof}
+
+% \begin{theorem}[Hausdorff-Young]
+% Let $p\in[1,2]$. Then the Fourier transform $\mathcal{F}$ extends to a bounded operator
+% \begin{equation*}
+% \mathcal{F}:L^p(\mathbb{R}^d)\to L^{p'}(\mathbb{R}^d).
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Using Lemma \ref{riemann-lebesgue} and the previous proposition, we get
+% \begin{equation*}
+% \mathcal{F}:L^1(\R^d)\to L^\infty(\R^d),\quad \mathcal{F}:L^2(\R^d)\to L^2(\R^d).
+% \end{equation*}
+% Using Proposition \ref{riesz-thorin}, we get for any $\theta\in(0,1)$, 
+% \begin{equation*}
+% {\frac 1 p} = \theta+{\frac {1-\theta} 2},\quad {\frac 1 {p'}} = {\frac {1-\theta} 2}.
+% \end{equation*}
+% In other words, for any $p\in[1,2]$ and its Hölder conjugate $p'$, we have the statement.
+% \end{proof}
+
+% \section{Singular Integral}
+
+% \subsection{Calderón-Zygmund Theory}
+
+% \begin{definition}
+% A mapping $K:\mathbb{R}^d\times\mathbb{R}^d\backslash\{0,0\}\to\mathbb{R}$ is called a singular kernel if we have,
+% \begin{equation*}
+% \lim_{\vert x -y\vert\to 0, x\not=y}{\frac {K(x,y)} {\vert x-y\vert^d}}
+% \end{equation*}
+% converges to some constant.
+% \par The singular integral of $K$ is an integral operator $T$ such that 
+% \begin{equation*}
+% (Tf)(x) = \int_{\mathbb{R}^d} K(x,y)f(y)dy.
+% \end{equation*}
+% \end{definition}
+
+% \begin{definition}
+% A function $K:\R^d\backslash\{0\}\to\R$ is called a Calderón-Zygmund kernel such that there exists a constant $B>0$ such that for any $x,y\in\R^d,x\not=0$
+% \begin{equation*}
+% \vert K(x)\vert\leq B\norm{x}^{-d},\quad x\not= y\Rightarrow \int_{\norm{x}\geq2\norm{y}}\vert K(x)-K(x-y)\vert dx\leq B,
+% \end{equation*}
+% and for any $0<r<s<\infty$, we have
+% \begin{equation*}
+% \int_{r<\norm{x}<s}K(x)dx = 0.
+% \end{equation*}
+% Obviously this is a singular kernel thus we define the corresponding singular integral by
+% \begin{equation*}
+% T_kf(x) = \lim_{\varepsilon\to0}\int_{\norm{x-y}>\varepsilon}K(x-y)f(y)dy.
+% \end{equation*}
+% where $f\in\mathcal{S}(\R^d)$.
+% \end{definition}
+
+% \begin{definition}
+% The Fourier transform of truncated Calderón-Zygmund for $0<r<s<\infty$ is $m_{r,s}(\xi)$ such that
+% \begin{equation*}
+% m_{r,s}(\xi)=\int_{r<\norm{x}<s}e^{-2\pi i x\cdot\xi}K(x)dx.
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% Let $K$ be a Calderón-Zygmund with constant $B$. Then there is a constant $C$ depending only on the dimension such that for any $0<r<s<\infty$, we have
+% \begin{equation*}
+% \norm{m_{r,s}}_{\LpRd{\infty}{d}}\leq BC.
+% \end{equation*}
+% \label{bound_cz_kernel}
+% \end{proposition}
+
+% \begin{proof}
+% \begin{equation*}
+% \left\vert \int_{r<\norm{x}<s}e^{-2\pi i x\cdot\xi}K(x)dx\right\vert = \leq \left\vert\int_{\norm{x}\leq\norm{\xi}^{-1}}e^{-2\pi ix\cdot\xi}\right\vert 
+% \end{equation*}
+% %later 5.26
+% \end{proof}
+
+% \begin{proposition}
+% Let $K$ be a Calderón-Zygmund kernel with constant $B$. Then there exists a constant $C_d$ only depending on the dimension such that
+% \begin{equation*}
+% \opNorm{T_K}{L^2(\R^d)} \leq BC_d.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% Let us define for $0<r<s<\infty$,
+% \begin{equation*}
+% T_{r,s}f(x)=\int_{r\leq\norm{x}\leq s}K(y)f(x-y)dy.
+% \end{equation*}
+% By Plancherel and Proposition \ref{bound_cz_kernel}, we have
+% \begin{equation*}
+% \norm{T_{r,s}f}_{L^2} = \norm{\widehat{T_{r,s}f}}_{L^2} = \norm{\hat{K}_{r,s}}_{L^2}\norm{f}_{L^2}\leq BC_d\norm{f}_{L^2}.
+% \end{equation*}
+% In particular, we have
+% \begin{equation*}
+% \int_{\R^d}\liminf_{r\to0,s\to\infty}\vert T_{r,s}f(x)\vert^2dx\leq\lim_{r\to0,s\to\infty}\int_{\R^d}\vert T_{r,s}f(x)\vert^2\leq (BC_d\norm{f}_{L^2})^2.
+% \end{equation*}
+% \end{proof}
+
+% \begin{proposition}
+% Let $K$ a Calderón-Zygmund kernel with constant $B$. Then there is $C>0$ such that for any $f\in\mathcal{S}(\R^d)$ and $\lambda>0$ such that
+% \begin{equation*}
+% \vert\{x\in\R^d\:|\: T_Kf(x)>\lambda\}\vert\leq{\frac {BC} \lambda}\normL{f}{1}{\R^d}.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% Without loss of generality, we may assume that $B=1$. We fix $f\in\mathcal{S}(\R^d)$. By Calderón-Zygmund decomposition of height $\lambda>0$, we have for some suitable $g,b$,
+% \begin{equation*}
+% f=g+b,
+% \end{equation*}
+% where 
+% \begin{enumerate}
+% \item $\vert g\vert\leq\lambda$,
+% \item $b=\sum_{Q\in\mathcal{B}}f\chi_B$,
+% \item $\lambda\leq\int_B\vert f\vert dx\leq 2^d\lambda$,
+% \item $\sum_{Q\in\mathcal{B}}Q = \{x\in\R^d\:|\:\mathcal{M}_\Delta f(x)>\lambda\}$.
+% \end{enumerate}
+% Let us consider
+% \begin{equation*}
+% f_1 = g+\sum_{Q\in\mathcal{B}}f_Q, \quad f_2 = b-\sum_{Q\in\mathcal{B}}f_Q.
+% \end{equation*}
+% By the decomposition we have,
+% \begin{equation*}
+% \normL{f_1}{\infty}{\R^d}\leq 2^d\lambda, \quad \normL{f_1}{1}{\R^d},\normL{f_2}{1}{\R^d}\leq \normL{f}{1}{\R^d}.
+% \end{equation*}
+% Also observe that $(f_1)_Q = 0$.
+% %later 5.26
+% \end{proof}
+
+% \begin{definition}
+% A functional $\Omega:\R^d\backslash\{0\}\to\R$ is said to be homogeneous of degree $k\in\N\cup\{0\}$, if for any $x\in\R^d\backslash\{0\}$, we have for any $\lambda>0$
+% \begin{equation*}
+% \Omega(\lambda x) = \lambda^k\Omega(x).
+% \end{equation*}
+% \end{definition}
+
+% \begin{proposition}
+% Let $\Omega:\R^d\backslash\{0\}\to\R$ be a homogeneous function of degree $0$. If $K(x) = {\frac {\Omega(x)} {\norm{x}^{d}}}$ is a Calderón-Zygmund kernel then
+% \begin{enumerate}[i).]
+% \item $\Omega$ is bounded on $S^{d-1}$, and in particular it is measurable with respect to the surface measure on $S^{d-1}$.
+% \item $\int_{S^{d-1}}\Omega(x)dx = 0$.
+% \item Let $x,y\in S^{d-1}$ be such that $x\not=y, \vert x-y\vert\leq\delta$, then $\omega(\delta) = \vert\Omega(x)-\Omega(y)\vert$. We have $\int_0^1{\frac {\omega(\delta)} \delta}d\delta<\infty$.  
+% \end{enumerate}
+% \label{cz_homogeneous_prop}
+% \end{proposition}
+
+% \begin{proposition}
+% Let $T:\LpRd{2}{d}\to\LpRd{2}{d}$ be a bounded linear operator. It is translation invariant if and only if there is a $L^\infty$ function $m:\R^d\to\R$ such that
+% \begin{equation*}
+% \mathcal{F}(Tf) = m(\xi)\mathcal{F}(f)(\xi)
+% \end{equation*}
+% where
+% \begin{equation*}
+% \normL{m}{\infty}{\R^d} = \opNorm{T}{\LpRd{2}{d}}.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% %later Check exercise.
+% \end{proof}
+
+% \begin{theorem}
+% Suppose $\Omega$ satisfies the conditions for Proposition \ref{cz_homogeneous_prop}. Let $p\in(1,\infty)$, we define for each $\varepsilon>0$ a linear operator $T_\varepsilon$ on $\LpRd{p}{d}$ such that
+% \begin{equation*}
+% T_\varepsilon f(x) = \int_{\norm{y}\geq\varepsilon}{\frac {\Omega(y)} {\norm{y}^d}}f(x-y)dy.
+% \end{equation*}
+% Then we have that there is a constant $A_p$ depending on $p$ such that $\normL{T_\varepsilon f}{p}{\R^d} \leq A_p\normL{f}{p}{\R^d}$. Furthermore, the limit $Tf=\lim_{\varepsilon\to 0}T_\varepsilon f$ exists and have
+% \begin{equation*}
+% \opNorm{T}{L^p} \leq A_p.
+% \end{equation*}
+% In particular, for $p=2$, we have
+% \begin{equation*}
+% \mathcal{F}(Tf) = m(\xi)\hat{f}(\xi),
+% \end{equation*}
+% where
+% \begin{equation*}
+% m(x) = \int_{S^{d-1}}\left[{\frac {\pi i} 2}\sgn(x\cdot y )+\ln{\frac 1 {\vert x\cdot y\vert}}\right]\Omega(y)d\sigma(y).
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Let $K(x) = {\frac {\Omega(x)}{\norm{x}^d}}$. Then the upper bound and the smoothness can be shown
+% \begin{equation*}
+% K(x-y)-K(x) = {\frac {\Omega(x-y)-\Omega(x)}{\norm{x-y}^d}}+\Omega(x)\left[{\frac 1 {\norm{x-y}^d}}-{\frac 1 {\norm{x}^d}}\right].
+% \end{equation*}
+% By continuity of $\norm{x}^{-d}$ besides the origin, we have
+% %later 6.2
+% \end{proof}
+
+% \begin{theorem}
+% Suppose $\Omega$ satisfies the conditions for Proposition \ref{cz_homogeneous_prop}. We define for each $\varepsilon>0$ a linear operator $T_\varepsilon$ on $\LpRd{1}{d}$ such that
+% \begin{equation*}
+% T_\varepsilon f(x) = \int_{\norm{y}\geq\varepsilon}{\frac {\Omega(y)} {\norm{y}^d}}f(x-y)dy.
+% \end{equation*}
+% Then $Tf=\lim_{\varepsilon\to 0}T_\varepsilon f$, (ie, converges almost everywhere). Furthermore, there is $C>0$ such that for any $f\in\LpRd{1}{d}$ and $\lambda>0$
+% \begin{equation*}
+% \vert\{x\in\R^d\:|\: Tf(x)>\lambda\}\vert\leq {\frac C \lambda}\normL{f}{\LpRd{1}{d}}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% Let $f\in L^1(\R^d)$ and $\lambda>0$. Consider the Calderón-Zygmund decomposition at height $\lambda$, $f=g+b$ with the set of dyadic sets $\mathcal{B}$. For each $Q\in\mathcal{B}$, we set $Q^* = 2\sqrt{d}Q$. Let $F^* = (\bigcup_{Q\in\mathcal{B}}Q^*)^c$. Observe
+% \begin{equation*}
+% \{x\in\R^d\:|\: T_\varepsilon f(x)>\lambda\}\subseteq\{x\in\R^d\:|\: T_\varepsilon g(x)>{\frac \lambda 2}\}\cup\{x\in\R^d\:|\: T_\varepsilon b(x)>{\frac \lambda 2}\}.
+% \end{equation*}
+% %address the proper proposition for the below
+% Since $g$ is $L^1$ and bonded thus by Hölder, we get $g$ is of $L^2$. We have shown the case $p=2$ and by Corollary \ref{maximal_function_p_ineq}, we get
+% \begin{equation*}
+% \vert\{x\in\R^d\:|\: T_\varepsilon g(x)>{\frac \lambda 2}\}\vert\leq{\frac {C} {\lambda^2}}\norm{g}_{L^2}^2.
+% \end{equation*}
+% It is now left to show that the bound for the other part. Let us show that for any $x\in F^*$, we have there is $C$ such that
+% \begin{equation*}
+% \vert Tb(x)\vert\leq\sum_{Q\in\mathcal{B}}\int_Q\vert K(x-y)-K(x-y_Q)\vert\vert b(x)\vert dy+Cb^*(x),
+% \end{equation*}
+% where $y_Q$ is the center of the cube $Q$. 
+% \end{proof}
+
+% \subsection{Bounded Mean Oscillation}
+
+% \begin{definition}
+% Let $\mathcal{Q}=\{\text{Cubes in }\R^d\}$. BMO space over $\R^d$ is a set of locally integrable functions $f:\R^d\to\R$ such that their norm
+% \begin{equation*}
+% \norm{f}_{\text{BMO}} = \sup_{Q\in\mathcal{Q}}{\frac 1 {\vert Q\vert}}\int_Q \vert f(x)-f_Q\vert dx,
+% \end{equation*}
+% is finite where $f_Q=\int_Qfdx$.
+% \end{definition}
+
+% \begin{remark}
+% BMO space is a Banach space with $\norm{\cdot}_{\text{BMO}}$ with an additional structure such that two functions are equivalent if their difference is constant.
+% \end{remark}
+
+% \begin{lemma}
+% Let $Q_1,Q_2$ be cubes in $\R^d$ such that each side of $Q_2$ is half of the length of $Q_1$. Then we have for any element of BMO space $f$,
+% \begin{equation*}
+% \vert f_{Q_1}-f_{Q_2}\vert\leq 2^d\norm{f}_{\text{BMO}}.
+% \end{equation*}
+% In general, if each side of $Q_2$ is of $2^{-n}$ of the length of corresponding side of $Q_1$, we have
+% \begin{equation*}
+% \vert f_{Q_1}-f_{Q_2}\vert\leq n2^d\norm{f}_{\text{BMO}}.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.5
+% \end{proof}
+
+% \begin{proposition}
+% Let $T_K$ be a singular integral operator corresponding to some Calderón-Zygmund kernel $K$. Then there is a constant $C>0$ such that for any $f\in \LpRd{2}{d}\cap\LpRd{\infty}{d}$, 
+% \begin{equation*}
+% \norm{Tf}_{\text{BMO}} \leq C\norm{f}_{L^\infty}.
+% \end{equation*}
+% (Note that $T$ takes $L^\infty$ to the BMO space.
+% \end{proposition}
+
+% \begin{proof}
+% %later 6.5
+% \end{proof}
+
+% \subsection{Mikhlim Multiplier Theorem}
+
+% \begin{definition}
+% A smooth bounded function $m:\R^d\to\C$ (possibly not smooth at the origin) is called a Mikhlim multiplier if there exists $B>0$ such that for any $\gamma\in(N\cup\{0\})d$
+% \begin{equation*}
+% \vert \gamma\vert\leq d+2\Rightarrow\forall\xi\in\R^d\{0\} \vert\partial_\gamma(\xi)\vert\leq B\vert\xi\vert^{-\vert\gamma\vert}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% If $m\in\mathcal{C}^{d+2}(\R^d,\C)$ and $m$ is homogeneous of degree $0$ then it is Mikhlim.
+% \end{lemma}
+
+% \begin{lemma}
+% Let $K\in\mathcal{C}^1(\R^d,\C)$ such that there is $B$ satisfying for any $x\in\R^d\{0\}$,
+% \begin{equation*}
+% \vert\nabla K(x)\vert\leq C\norm{x}^{-d-1},
+% \end{equation*}
+% then we have there is $C>0$ such that for any $x,y\in\R^d, x\not=0, x\not=y$, we have
+% \begin{equation*}
+% \int_{\norm{x}\geq2\norm{y}}\vert K(x)-K(x-y)\vert dx\leq C.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.16
+% \end{proof}
+
+% \begin{definition}
+% A functional $\psi\in\mathcal{C}^\infty(\R^d)$ is called a radial if there is a function $\varphi\mathcal{C}^\infty(\R)$ such that for any $x\in\R^d$, $\psi(x) = \varphi(\norm{x})$.
+% \end{definition}
+
+% \begin{lemma}
+% There exista a radial $\psi\in\mathcal{C}^\infty(\R^d)$ such that 
+% \begin{enumerate}
+% \item $\supp\psi\subseteq\{{\frac 1 2}\leq\norm{x}\leq2\}$,
+% \item $\sum_{j\in\Z}\psi(2^{-j}x) = 1$ almost everywhere.
+% \end{enumerate}
+% \label{mikhlim_lemma_4}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.16
+% \end{proof}
+
+% \begin{lemma}
+% Let $\psi$ be a radial with the properties in Lemma \ref{mikhlim_lemma_4}, and $m:\R^d\to\C$ be a mikhlim multiplier with constant $B>0$. Then we define
+% \begin{equation*}
+% m_j(\xi) = m(\xi)\psi(2^{-j}\xi).
+% \end{equation*}
+% Almost everywhere, we have,
+% \begin{equation*}
+% \sum_{j\in\Z} m_j(\xi) = m(\xi).
+% \end{equation*}
+% Furthermore, if we define 
+% \begin{equation*}
+% K_j(x) = \check{m_j}(x).
+% \end{equation*}
+% We have there is $C>0$ such that for any $N\in\N$ and $K^N(x) = \sum_{\vert n\vert\leq N} K_n(x)$,
+% \begin{equation*}
+% K^N(x)\leq BC\norm{x}^{-d},\:\vert \nabla K^N(x)\vert\leq BC\norm{x}^{-d-1}.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.16
+% \end{proof}
+
+% \begin{theorem}
+% Let $m:\R^d\to\C$ be a Mikhlim multiplier with constant $B>0$. Then for any $p\in(1,\infty)$ there is $C$ depending only on $p$ and $d$ such that for any $f\in\mathcal{S}(\R^d)$, we have
+% \begin{equation*}
+% \normL{T_mf}{p}{\R^d}\leq C\normL{f}{p}{\R^d}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.16
+% \end{proof}
+
+% \subsection{Littlewood-Parley Square Functions}
+
+% \begin{definition}
+% Let $f\in\mathcal{S}(\R)$. Then we define for $j\in\Z$, $j$-th rough Littlewood-Parley projection
+% \begin{equation*}
+% \Pi_jf(x) = (\chi_{[2^j,2^{j+1})}(\xi)\hat{f}(\xi))^\vee(x).
+% \end{equation*}
+% The Littlewood-Parley square function is 
+% \begin{equation*}
+% \mathcal{S}f(x) = (\sum_{j\in\Z}\vert \Pi_jf(x)\vert^2)^{\frac 1 2}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+% $\mathcal{S}f$ is of $L^2$ and in particular,
+% \begin{equation*}
+% \normL{f}{2}{\R} = \normL{\mathcal{S}f}{2}{\R}.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.26
+% \end{proof}
+
+% \begin{theorem}
+% Let $p\in(1,\infty)$, then there exists a constant $C_p>0$ only depending on $p$ such that for any $f\in\mathcal{S}(\R)$ we have
+% \begin{equation*}
+% C_p^{-1}\normL{f}{p}{\R}\leq\normL{Tf}{p}{\R}\leq C_p\normL{f}{p}{\R}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.26
+% \end{proof}
+
+% \begin{definition}
+% Recall a radial function from $\psi$ from Lemma \ref{mikhlim_lemma_4}. Let $f\in\mathcal{S}(\R^d)$ and $j\in\Z$. the $j$-th smooth Littlewood-Parley projection is
+% \begin{equation*}
+% P_jf(x) = (\psi(2^{-j}\xi)\hat{f}(\xi))^\vee(x).
+% \end{equation*}
+% The smooth Littlewood-Parley square function is 
+% \begin{equation*}
+% \mathcal{S}f(x) = (\sum_{j\in\Z}\vert P_jf(x)\vert^2)^{{\frac 1 2}}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{theorem}
+% Let $p\in(1,\infty)$, then there exists a constant $C_p>0$ only depending on $p$ and $d$ such that for any $f\in\mathcal{S}(\R^d)$ we have
+% \begin{equation*}
+% C_{p,d}^{-1}\normL{f}{p}{\R}\leq\normL{Tf}{p}{\R}\leq C_{p,d}\normL{f}{p}{\R}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.26
+% \end{proof}
+
+% \subsection{Sobolev Spaces}
+
+% \begin{definition}
+% Let $s\geq 0$. For $f\in\mathcal{S}(\R^d)$, we have
+% \begin{equation*}
+% \norm{f}_{H^s(\R^d)} = \left(\int_{\R^d}\norm{\xi}^{2s}\vert \hat{f}(xi)\vert^2dx\right)^{{\frac 1 2}}.
+% \end{equation*}
+% Then this becomes a norm and we define the homogeneous Sobolev space $H^s(\R^d)$ of degree $s$ to be the completion of the Schwartz class under this norm.
+% \end{definition}
+
+% \begin{proposition}
+% Let $0\leq s<{\frac d 2}$ and ${\frac 1 2} -{\frac 1 2} = {\frac s d}$. Then there is $C_{p,d}>0$ such that for any $f\in\mathcal{S}(\R^d)$.
+% \begin{equation*}
+% \norm{f}_{L^p(\R^d)}\leq C_{p,d}\norm{f}_{H^s(\R^d)}.
+% \end{equation*}
+% \end{proposition}
+
+% \begin{proof}
+% %later 6.26
+% \end{proof}
+
+% \begin{definition}
+% Let $\alpha\in(0,1)$, a function $f:\R^d\to\R$ is Hölder continuous of exponent $\alpha$ if
+% \begin{equation*}
+% [f]_\alpha = \sup_{x,y\in\R^d,x\not=y}{\frac {\vert f(x)-f(y)\vert} {\norm{x-y}^\alpha}}
+% \end{equation*}
+% is finite. The space of all these functions are denoted $\mathcal{C}^{0,\alpha}(\R^d)$. 
+% \end{definition}
+
+% \begin{lemma}
+% Let $g\in\mathcal{S}(\mathbb{R}^d)$. Let us define an operator on $L^\infty(\R^d)$ by 
+% \begin{equation*}
+% L^\infty(\R^d)\ni f\mapsto g\ast f.
+% \end{equation*}
+% If there is $R>0$ such that $\supp\hat{g}\subseteq B(0,R)$, then 
+% \end{lemma}
+
+% \begin{lemma}
+% Let $g\in\mathcal{S}(\R^d)$ and define a linear operator on $L^\infty(\R^d)$ by 
+% \begin{equation*}
+% Pf = g\ast f.
+% \end{equation*}
+% For any $p\in(1,\infty)$, there exists a constant $C_{p,d}>0$ only depending on $p,d$ such that for any $R>0$,
+% \begin{equation*}
+% \supp\hat{g}\subseteq B(0,R)\Rightarrow \normL{\nabla Pf}{p}{\R^d}\leq C_{p,d}R\normL{f}{p}{\R^d}.
+% \end{equation*}
+% \end{lemma}
+
+% \begin{proof}
+% %later 6.27
+% \end{proof}
+
+% \begin{theorem}
+% Let $f:\R^d\to\R$ be a measurable function such that $\vert f(x)\vert\leq1$ almost everywhere. Then we have
+% \begin{equation*}
+% f\in\mathcal{C}^{0,\alpha}(\R^d)\Leftrightarrow \exists A>0, \forall\j\in\Z, \normL{f}{\infty}{\R^d}\leq A2^{-j\alpha}.
+% \end{equation*}
+% Let $A^*$ be the infimum of the constant satisfying the equivalent condition. there is a constant $C_d$ such that only depending on $d$ and 
+% \begin{equation*}
+% C_d^{-1}A\leq[f]_\alpha\leq C_dA.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.27
+% \end{proof}
+
+% \subsection{Fourier Transform of Measures}
+
+% \begin{definition}
+% Consider a smooth real-valued function $\Phi:\R^d\to\R$. A point $\xi\in\R^d$ is called a 
+% \begin{enumerate}
+% \item a stationary phase if $\nabla\Phi(\xi)=0$,
+% \item a non-stationary phase otherwise.
+% \end{enumerate}
+% \end{definition}
+
+% \begin{theorem}
+% Let $\Phi:\R^d\to\R$ be smooth and $a\in\mathcal{C}^\infty_C(\R^d)$. If $\nabla\Phi$ is non-zero over $\supp a$, then consider
+% \begin{equation*}
+% I(\lambda) = \int_{\R^d}e^{i\lambda \Phi(\xi)}a(\xi)d\xi,
+% \end{equation*}
+% We have that there is a constant $C$ corresponding to $\Phi,a,d$ and $N\in\N$ such that
+% \begin{equation*}
+% \vert I(\lambda)\vert\leq C\lambda^{-N}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.30
+% \end{proof}
+
+% \begin{theorem}
+% Let $\Phi:\R^d\to\R$ be smooth and $a\in\mathcal{C}^\infty_C(\R^d)$. If at only one point $\xi_0$ in $\supp a$ is a stationary point of $\Phi$ and 
+% \begin{equation*}
+% \det D^2\Phi(\xi_0)\not=0.
+% \end{equation*}
+% Then consider,
+% \begin{equation*}
+% I(\lambda) = \int_{\R^d}e^{i\lambda \Phi(\xi)}a(\xi)d\xi,
+% \end{equation*}
+% there is a constant $C$ corresponding to $\Phi,a,d$ and $N\in\N$ such that
+% \begin{equation*}
+% \vert I(\lambda)\vert\leq C\lambda^{-{\frac d 2}}.
+% \end{equation*}
+% Furthermore, we have for any $k$, there is $C'$ such that
+% \begin{equation*}
+% \vert I(\lambda)\vert\leq C'\lambda^{-{\frac d 2}-k}.
+% \end{equation*}
+% \end{theorem}
+
+% \begin{proof}
+% %later 6.30
+% \end{proof}
+
+% \begin{corollary}
+% Consider a hypersurface $\mathcal{M}$ in $\R^{d+1}$. Let $\Phi\in\mathcal{C}^\infty_C(\R^d)$ and $d\sigma$ be a surface measure of $\mathcal{M}$. We consider a measure
+% \begin{equation*}
+% d\mu = \Phi d\sigma.
+% \end{equation*}
+% We further denote the normal vector of $\mathcal{M}$ at $x\in\mathcal{M}$ to be $N(x)$. We have the following statement.
+% \par 1). For $\xi\in\R^{d+1}$, if $\xi$ is not parallel to $N(x)$, there exists $C>0$ such that for any $x\in\supp \Phi\cap\mathcal{M}$ and $k\in\N\cup\{0\}$,
+% \begin{equation*}
+% \vert\hat{\mu}(\xi)\vert\leq C\norm{\xi}^{-k}.
+% \end{equation*} 
+% \par 2). If $\mathcal{M}$ has non-vanishing curvature (ie, locally there is a function $f$ such that $\det D^2f\not=0$ and $\mathcal{M}$ is a graph of $f$), then there is a constant $C>0$ only depending on $\mu,\mathcal{M}$ such that
+% \begin{equation*}
+% \vert\hat{\mu}(\xi)\vert\leq C\norm{\xi}^{-{\frac d 2}}.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% %later 7.3
+% \end{proof}
+
+% \begin{definition}
+% We denote the set of continuous functions vanishing at $\pm\infty$ to be $\mathcal{C}_0(\R^d)$.
+% \end{definition}
+
+% \begin{theorem}
+% Let $f\in \LpRd{1}{d}$ then we have $\hat{f}\in\mathcal{C}_0(\R^d)$. In particular, we have
+% \begin{equation*}
+% \norm{\hat{f}}_{L^\infty}\leq\norm{f}_{L^1}.
+% \end{equation*}
+% Furthermore, we have
+% \begin{equation*}
+% f\in\LpRd{1}{d}\cap\LpRd{2}{d}\Rightarrow \norm{\hat{f}}_{L^2}=\norm{\hat{f}}_{L^2}.
+% \end{equation*}
+% In other words, the Fourier transformation can be extended to $L^2$ in such a way that it is a unitary operator.
+% \end{theorem}
+
+% \begin{proof}
+% %later 7.3
+% \end{proof}
+
+% \begin{corollary}
+% Let $p\in[1,2]$ and $f\in\mathcal{C}^\infty_0(\R^d)$. Then we have
+% \begin{equation*}
+% \norm{\hat{f}}_{L^{p'}}\leq\norm{f}_{L^p}.
+% \end{equation*}
+% \end{corollary}
+
+% \begin{proof}
+% Riesz-Thorin together with the theorem above.
+% \end{proof}
+
+% \begin{definition}
+% The surface measure $\sigma$ on $S^{d-1}$ is such that 
+% \begin{equation*}
+% \sigma(A) = {\frac 1 {\vert B(0,1)\vert}}\vert\{tx\:|\: x\in A,t\in[0,1]\}.
+% \end{equation*}
+% \end{definition}
+
+% \begin{lemma}
+
+% \end{lemma}
+
+% \begin{theorem}
+% Let $d\geq 2$ and $1\leq p\leq {\frac {4d} {3d+1}}$. Then there exists a constant only depending on $p$ and $d$ such that, for any $f\in\mathcal{S}(\R^d)$,
+% \begin{equation*}
+% \normL{\hat{f}}{2}{S^{d-1},d\sigma}\leq C_{d,p}\normL{f}{p}{\R^d}.
+% \end{equation*}
+% \end{theorem}
+
+\end{document}
