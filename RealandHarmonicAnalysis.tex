@@ -593,6 +593,10 @@ Observe that
     \item $\sup_{n\in\bN}\int_\bT\vert\Phi_n(x)\vert dx <\infty$.
     \item $\forall \delta>0,\lim_{n\to\infty}\int_{\ab{x}>\delta}\ab{\Phi_N(x)}dx = 0$.
   \end{enumerate}
+    We denote 
+  \begin{equation*}
+    C_{\{\Phi_n\}_n} \defeq \sup_{n\in\bN}\int_\bT\vert\Phi_n(x)\vert dx.
+  \end{equation*}
 \end{definition}
 \begin{example}
   Set $\Phi_n(x)$ to be 
@@ -635,8 +639,109 @@ Observe that
   \label{proposition_2_9}
 \end{proposition}
 \begin{proof}
+  For $f\in C^0(\bT)$, we have,
+  \begin{align*}
+    \Phi_n\ast f(x) - f(x) & = \int_\bT\Phi_n(y)f(x-y)dy - \int_\bT\Phi_n(y)dy\cdot f(x),\\
+    & = \int_\bT\Phi_n(y)(f(x-y)-f(x))dy.
+  \end{align*}
+  For $\varepsilon>0$, there is $\delta>0$ and $N\in\bN$ such that 
+  \begin{equation*}
+    \ab{y}<\delta\Rightarrow \ab{f(x-y)-f(x)}<\varepsilon, n\geq N\Rightarrow\int_{\ab{y}>\delta}\ab{\Phi_n(y)}dy<\varepsilon.
+  \end{equation*}
+  To show the first statment, we have to consider,
+  \begin{align*}
+     \int_\bT\Phi_n(y)(f(x-y)-f(x))dy & = \underbrace{\int_{\ab{y}\leq \delta}\Phi_n(y)(f(x-y)-f(x))dy}_{\defeq I_1}\Phi_n(y)\\
+     &+\underbrace{\int_{\ab{y}> \delta}\Phi_n(y)(f(x-y)-f(x))dy}_{\defeq I_2}.
+  \end{align*}
+  Using the continuity of $f$, we obtain,
+  \begin{align*}
+    \ab{I_1} & \leq \int_{\ab{y}\leq \delta}\ab{\Phi_n(y)}\ab{(f(x-y)-f(x))}dy,\\
+    & \leq \varepsilon\int_{\ab{y}\leq \delta}\ab{\Phi_n(y)}dy,\\
+    & \leq C_{\{\Phi_n\}_n}\varepsilon.
+  \end{align*}
+  For the other part,
+  \begin{equation*}
+    \ab{I_2}\leq 2\norm{f}_{L^\infty(\bT)}\int_{\ab{y}\geq\delta}\ab{\Phi_n(y)}dy\leq  2\norm{f}_{L^\infty(\bT)}\varepsilon.
+  \end{equation*}
+  Taking $\varepsilon\to0$, the statement is proven.
+  \par For the second statement, we first show the case when $f$ is continuous. Inheritting $I_1,I_2$ from the previous part, we see 
+  \begin{align*}
+    \norm{I_1}_{L^p(\bT)} &\stackrel{\ztext{Minkowski}}{\leq}\int_{\ab{y}\leq \delta}\ab{\Phi_n(y)}\norm{f(x-y)-f(x)}_{L^p(\bT)}dy,\\
+    & \leq \sup_{\ab{y}\leq \delta}\norm{f(x-y)-f(x)}_{L^p(\bT)}\int_{\ab{y}\leq\delta}\ab{\Phi_n}(y)dy.
+  \end{align*}
+  By the same argument as before on $I_2$, the statement holds as $\delta\to0$. For the general case, recall $C^0(\bT)$ is dense in $L^p(\bT)$, therefore for $f\in L^p(\bT)$ take $g\in C^0(\bT)$ such that 
+  \begin{equation*}
+    \norm{f-g}_{L^p(\bT)}\leq \varepsilon,
+  \end{equation*}
+  we get,
+  \begin{align*}
+    \norm{f(x-y)-f(x)}_{L^p(\bT)}\leq& \norm{f(x-y)-g(x-y)}_{L^p(\bT)}+\norm{g(x-y)-g(x)}_{L^p(\bT)}\\
+    &+\norm{f(x)-g(x)}_{L^p(\bT)}.
+  \end{align*}
+  For the third statement, from Definition \ref{definition_1_1}, we have 
+  \begin{equation*}
+    (\Phi_n\ast\mu)(x) = \int_\bT\Phi_n(x-y)d\mu(y).
+  \end{equation*}
+  Therefore,
+  \begin{equation*}
+    \int_\bT f(x)(\Phi_n\ast\mu)(x)dx \stackrel{\ztext{Fubini}}{=}\int_\bT\int_\bT (f\ast\Phi_n)(y)d\mu(y).
+  \end{equation*}
+\end{proof}
+
+\begin{corollary}$\:$
+  \label{corollary_2_1}
+  \begin{enumerate}[1. ]
+    \item Trigonometric polynomials are dense in $C^0(\bT)$ and $L^p(\bT)$ for $1\leq p<\infty$.
+    \item Plancherel theorem holds, that is  
+    \begin{equation*}
+      \forall f\in L^2(\bT), \norm{f}_{L^2(\bT)}^2 = \sum_{n\in\bZ}\ab{\hat{f}(n)}^2.
+    \end{equation*}
+    \item $\{e_n(x)\}_{n\in\bZ}$ is an orthonormal basis of $L^2(\bT)$.
+    \item For any $f,g\in L^2(\bT)$, we have 
+    \begin{equation*}
+      \langle f,g\rangle_{L^2(\bT)} = \langle \hat{f},\hat{g}\rangle_{l^2(\bZ)}.
+    \end{equation*}
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+  The first statement follows from Theorem \ref{theorem_2_2}. Together with Proposition \ref{proposition_1_2}, the third statement follows. Using $L^2(\bT)$ is a Hilbert space, we see 2 and 4 are equivalent. Clearly, 3 and 4 are also equivalent. We complete the proof.
+\end{proof}
+
+\subsection{Maximal Functions}
+
+\begin{notation}
+  For $x\in\bR^d$, we denote,
+  \begin{equation*}
+    \cB_x \defeq \{B(x,r)\sep r>0\}.
+  \end{equation*}
+\end{notation}
+
+\begin{definition}
+  Let $f:\bR^d\to \bR$ be an integrable function (e.g. $L^1$). The Hardy-Littlewood maximal function of $f$ is 
+  \begin{equation*}
+    f^*(x) \defeq \sup_{B\in\cB_x}{\frac 1 {\ab{B}}}\int_B\ab{f(y)}dy.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  $f\in L^1(\bR^d)$ does not imply $f^*\in L^1(\bR^d)$.
+\end{remark}
+
+\begin{theorem}
+  Let $f:\bR^d\to\bR$ be an integrable function. $f^*$ satisfies the following statements.
+  \begin{enumerate}
+    \item $f^*$ is measurable.
+    \item $f^*(x)$ is finite almost everywhere on $\bR^d$.
+    \item For any $\alpha>0$, we have 
+    \begin{equation*}
+      \ab{\{x\in\bR^d\sep f^*(x)>\alpha\}}\leq {\frac {3^d} {\alpha}}\norm{f}_{L^1(\bR^d)}.
+    \end{equation*}
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
   %current Current
 \end{proof}
+
 % \section{Preliminaries}
 % \subsection{Measure Spaces}
 
