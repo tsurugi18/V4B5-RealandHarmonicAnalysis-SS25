@@ -11,6 +11,7 @@
 \usepackage{lipsum}
 \usepackage{fancyhdr}
 \usepackage{tikz-cd} 
+\usepackage{dsfont}
 \usetikzlibrary{arrows}
 \newcommand{\midarrow}{\tikz \draw[-triangle 90] (0,0) -- +(.1,0);}
 
@@ -30,7 +31,6 @@
 \DeclareMathOperator{\Hom}{Hom}
 \DeclareMathOperator{\Dom}{Dom}
 \DeclareMathOperator{\grad}{grad}
-\DeclareMathOperator{\conv}{conv}
 \DeclareMathOperator{\Span}{Span}
 \DeclareMathOperator{\interior}{int}
 \DeclareMathOperator{\supp}{supp}
@@ -39,9 +39,12 @@
 \DeclareMathOperator{\Var}{Var}
 %\newcommand*{\name}[\num_arguments][default values]{{\color{#1}\Large #2}}
 \newcommand{\ztext}[1]{\text{\makebox[0pt][c]{\tiny #1}}}
+\newcommand{\zmtext}[1]{\mathmakebox[0pt][c]{#1}}
+\newcommand{\loc}[0]{\mathrm{loc}}
+\newcommand{\alev}[0]{\:\text{almost everywhere}\:}
 \newcommand{\norm}[1]{\Vert #1 \Vert}
 \newcommand{\ab}[1]{\vert #1 \vert}
-\newcommand{\sep}[1]{\:\vert\:}
+\newcommand{\sep}[0]{\:\vert\:}
 \newcommand{\defeq}{\vcentcolon=}
 \newcommand{\opNorm}[2]{\norm{#1}_{#2\to#2}}
 \newcommand{\normL}[3]{\norm{#1}_{L^{#2}(#3)}}
@@ -53,12 +56,14 @@
 \newcommand{\bE}[0]{\mathbb{E}}
 \newcommand{\bP}[0]{\mathbb{P}}
 \newcommand{\cM}[0]{\mathcal{M}}
+\newcommand{\cL}[0]{\mathcal{L}}
 \newcommand{\cB}[0]{\mathcal{B}}
 \newcommand{\cH}[0]{\mathcal{H}}
 \newcommand{\cC}[0]{\mathcal{C}}
 \newcommand{\cD}[0]{\mathcal{D}}
 \newcommand{\LpT}[1]{L^{#1}(\mathbb{T})}
 \newcommand{\LpRd}[2]{L^{#1}(\mathbb{R}^#2)}
+\newcommand{\conv}[0]{\mathrm{conv}}
 \newcommand{\fib}[1]{%
   \mathbin{\mathop{\times}\limits_{#1}}%
 }
@@ -726,10 +731,34 @@ Observe that
 \begin{remark}
   $f\in L^1(\bR^d)$ does not imply $f^*\in L^1(\bR^d)$.
 \end{remark}
-
+\begin{lemma}
+  \label{lemma_3_1}
+  Let $\mathcal{O} = \{B_1,\cdots,B_N\}$ be a finite collection of open balls in $\bR^d$ then there is asubcollection $\{B_{i_1},\cdots,B_{i_k}\}\subseteq\mathcal{O}$ such that 
+  \begin{equation*}
+    \left\vert\bigcup_{i=1}^NB_i\right\vert\leq 3^d\sum_{j=1}^k\vert B_{i_j}\vert.
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  Pick $B_{i_1}$ be a ball with the largest radius among $\mathcal{O}$. Set 
+  \begin{equation*}
+    \mathcal{O}_1\defeq\{B_i\in\mathcal{O}\sep B_i\cap B_{i_1} = \emptyset\}.
+  \end{equation*}
+  Iterate this process on $\mathcal{O}_1$ to get $B_{i_2},\cdots,B_{i_k}$ until $\mathcal{O}_k = \emptyset$. Then $\{B_{i_1},\cdots,B_{i_k}\}$ will do.
+\end{proof}
+\begin{definition}
+  A measure $\mu$ on the topological space $X$ is called a Radon measure if for any $E\subseteq X$ a measurable set,
+  \begin{equation*}
+    \mu(E) = \sup\{\mu(K)\sep \text{$K\subseteq E$ is compact}\}.
+  \end{equation*}
+\end{definition}
 \begin{theorem}
+  \label{theorem_3_2_1}
+  Lebesgue measures are Radon measures.
+\end{theorem}
+\begin{theorem}
+  \label{theorem_3_2}
   Let $f:\bR^d\to\bR$ be an integrable function. $f^*$ satisfies the following statements.
-  \begin{enumerate}
+  \begin{enumerate}[1.]
     \item $f^*$ is measurable.
     \item $f^*(x)$ is finite almost everywhere on $\bR^d$.
     \item For any $\alpha>0$, we have 
@@ -739,8 +768,232 @@ Observe that
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  %current Current
+  \textbf{1.} It is sufficient to show that for any $\alpha>0$,
+  \begin{equation*}
+    E_\alpha\defeq\{x\in\bR^d\sep f^*(x)>\alpha\}
+  \end{equation*}
+  is open since $\{E_\alpha\}_{\alpha>0}$ generate the $\sigma$-algebra. Let $\overline{x}\in E_\alpha$, then there is a ball $B\ni \overline{x}$ such that 
+  \begin{equation*}
+    {\frac 1 {\ab{B}}}\int_B\ab{f(y)}dy>\alpha.
+  \end{equation*}
+  Then $B\subseteq E_\alpha$ therefore $E_\alpha$ is open.
+  \par\textbf{3.} For a fixed $\alpha>0$ and $x\in E_\alpha$, we set $B_x$ to be an open ball around $x$ such that $B_x\subseteq E_\alpha$. Then by definition,
+  \begin{equation*}
+  {\frac 1 {\ab{B_x}}}\int_{B_x}\ab{f(y)}dy >\alpha\iff \ab{B_x}<{\frac 1 \alpha}\int_{B_x}\ab{f(y)}dy.
+  \end{equation*}
+  For a compact subset $K\subseteq E_\alpha$, let $\{B_{x_1},\cdots,B_{x_N}\}$ be finite open balls centered at $x_1,\cdots,x_N$, respecitvely, which cover $K$. Then we obtain,
+  \begin{align*}
+    \ab{K}&\leq 3^d\sum_{j=1}^k\ab{B_{x_j}},\\
+    & \leq {\frac {3^d} \alpha}\int_{\bigcup_{j=1}^k B_{x_{i_j}}}\ab{f(y)}dy,\\
+    &\leq {\frac {3^d} \alpha}\norm{f}_{L^1(\bR^d)}.
+  \end{align*}
+  Using Theorem \ref{theorem_3_2_1}, we have shown the statement.
+  \par\textbf{2. } In \textbf{3}, set $\alpha\to\infty$.
 \end{proof}
+\begin{theorem}[Chebyshev]
+  \label{theorem_3_3_1}
+  Let $X$ be a measurable space and $f\in L^1(X)$. For any $\varepsilon>0$, we have,
+  \begin{equation*}
+    \mu(\{x\in X\sep \ab{f(x)}>\varepsilon\})\leq {\frac 1 {\varepsilon}}\norm{f}_{L^1(X)}.
+  \end{equation*}
+\end{theorem}
+\begin{theorem}
+  \label{theorem_3_3}
+  Let $f:\bR^d\to\bR$ be an integrable function, then 
+  \begin{equation*}
+    \lim_{\substack{B\in\cB_x\\ \ab{B}\to 0}}{\frac 1 {\ab{B}}}\int_Bf(y)dy = f(x)
+  \end{equation*}
+  holds almost everywhere in $\bR^d$.
+\end{theorem}
+\begin{proof}
+  For $\alpha>0$, set
+  \begin{equation*}
+    E_\alpha \defeq\left\{x\in\bR^d\bigg{\vert}\lim_{\substack{B\in\cB_x\\ \ab{B}\to 0}}\left\vert{\frac 1 {\ab{B}}}\int_Bf(y)dy - f(x)\right\vert>2\alpha\right\}.
+  \end{equation*}
+  Then to prove the statement, it suffices to show that $\ab{E_\alpha}=0$ for any $\alpha>0$.
+  \par For an arbitrary $\varepsilon>0$, by the density argument, we take $g\in C_c^0(\bR^d)$ such that 
+  \begin{equation*}
+    \norm{f-g}_{L^1(\bR^d)}<\varepsilon.
+  \end{equation*}
+  By continuity, take a ball $B = B(x,\delta)$ for some $\delta>0$ so that 
+  \begin{equation*}
+    g(B)\subseteq (g(x)-\varepsilon,g(x)+\varepsilon).
+  \end{equation*}
+  Then observe that,
+  \begin{equation*}
+    {\frac 1 {\ab{B}}}\int_B\ab{g(y)-g(x)}dy \leq\varepsilon.
+  \end{equation*}
+  For the general case, notice 
+  \begin{equation*}
+   {\frac 1 {\ab{B}}}\int_B\ab{f(y)-f(x)}dy\leq {\frac 1 {\ab{B}}}\int_B\ab{f(y)-g(y)}dy+{\frac 1 {\ab{B}}}\int_B\ab{g(y)-f(x)}dy.
+  \end{equation*}
+  By the continuity of $g(y)-f(x)$, we obtain,
+  \begin{equation*}
+    \limsup_{\substack{\ab{B}\to 0\\ B\in\cB_x}}\left\vert{\frac 1 {\ab{B}}}\int_Bf(y)-f(x)dx\right\vert \leq (f-g)^*(x) + \ab{g(x)-f(x)}.
+  \end{equation*}
+  Set,
+  \begin{align*}
+    F_\alpha &\defeq\{x\in\bR^d\sep (f-g)^*(x)>\alpha\},\\
+    G_\alpha &\defeq\{x\in\bR^d\sep \ab{g(x)-f(x)}>\alpha\}.
+  \end{align*}
+  THen $E_\alpha\subseteq F_\alpha\cap G_\alpha$. Using Theorem \ref{theorem_3_3_1}, we obtain,
+  \begin{equation*}
+    \ab{G_\alpha}\leq {\frac 1 \alpha}\norm{f-g}_{L^1(\bR^d)}.
+  \end{equation*}
+  Using Theorem \ref{theorem_3_2}.3, we get,
+  \begin{equation*}
+    \ab{F_\alpha}\leq{\frac {3^d} \alpha}\norm{f-g}_{L^1(\bR^d)}.
+  \end{equation*}
+  Thus for fixed $\alpha$, $\ab{E_\alpha}\stackrel{\substack{\mathmakebox[0pt][c]{g\stackrel{L^1(\bR^d)}{\to}f}\\\:}}{\to}0$.
+\end{proof}
+
+\begin{remark}
+  The proof of Theorem \ref{theorem_3_3} shows that it is enough to assume $f\in L^1_\loc(\bR^d)$. In particular, this holds for any $f\in L^1(\bT^d)$ by extending it periodically to $\bR^d$.
+\end{remark}
+
+\begin{corollary}
+  \label{corollary_3_4}
+  For $f\in L^1_\loc(\bR^d)$, we have 
+  \begin{equation*}
+    f^*(x)\geq \ab{f(x)}\alev x\in\bR^d.
+  \end{equation*}
+\end{corollary}
+
+\begin{definition}
+  For $f\in L^1_\loc(\bR^d)$, we define the Lebesgue set of $f$ to be
+  \begin{equation*}
+    \cL(f) \defeq\left\{x\in\bR^d\:\bigg{\vert}\:\lim_{\substack{\ab{B}\to 0\\ B\in\cB_x}}{\frac 1 {\ab{B}}}\int_B\ab{f(y)-f(x)}dy = 0\right\}.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  If $f$ is continuous at $x$ then $x\in\cL(f)$.
+\end{remark}
+
+\begin{example}
+  \begin{equation*}
+    \cL(\mathds{1}_{\mathbb{Q}\cap[0,1]}) = \bR\backslash(\mathbb{Q}\cap[0,1]).
+  \end{equation*}
+\end{example}
+
+\begin{corollary}
+  \label{corollary_3_5}
+  Let $f\in L^1_\loc(\bR^d)$ then $\bR^d\backslash\cL$ has measure $0$.
+\end{corollary}
+
+\subsection{Ergodicity}
+
+\begin{definition}
+  \label{definition_4_1}
+  A measure preserving system is a tuple $(X,T)$ such that 
+  \begin{enumerate}[i.]
+    \item $X=(X,\mathcal{A},\mu)$ is a probability space.
+    \item $T:X\to X$ is a measurable bijection whose inverse is also measurable.
+    \item For any $A\in\mathcal{A}$, $\mu(T^{-1}(A)) = \mu(A)$.
+  \end{enumerate}
+\end{definition}
+
+\begin{definition}
+  \label{definition_4_2}
+  Given a measura preserving system $(X,T)$, the Koopmanization of $T$ is a map,
+  \begin{equation*}
+    L^2(X)\ni f\stackrel{u_T}{\mapsto} f\circ T\in L^2(X).
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  \label{remark_4_1}
+  Suppose $f\in L^1(X)$, then 
+  \begin{equation*}
+    \int_X u_T(f)d\mu = \int_X fd\mu.
+  \end{equation*}
+  This can be seen by that for $f = \mathds{1}_A$ where $A\in\mathcal{A}$,
+  \begin{equation*}
+    \mu(A) = \int_X \mathds{1}_A\circ Td\mu = \int_X \mathds{1}_{T^{-1}(A)}d\mu = \mu(T^{-1}(A)).
+  \end{equation*}
+  Furthermore, for $f\in L^2(X)$, as $\ab{f\circ T}^2 = \ab{f}\circ T$, we see that 
+  \begin{equation*}
+    \int_X\ab{f\circ T}^2d\mu = \int_X\ab{f}^2d\mu.
+  \end{equation*}
+\end{remark}
+
+\begin{example}
+  \label{example_4_1}
+  For $d\in\bN$ a torus rotation defines a measure preserving system. Explicitly, $X=\bT^d = \bR^d/\bZ^d$ and for $\alpha\in\bR^d$, for $x\in\bT^d$, we define 
+  \begin{equation*}
+    T(x)\defeq x+\alpha.
+  \end{equation*}
+\end{example}
+
+\begin{example}[Bernoulli System]
+  \label{example_4_2}
+  Let $X=\{0,1\}^\bN$. Let $\mathbb{P}$ be a probability measure on $\{0,1\}$, we set $\mu = \mathbb{P}^{\oplus \bN}$. Then 
+  \begin{equation*}
+    T((x_n)_{n\in\bN}) = (0,x_1,x_2,\cdots).
+  \end{equation*}
+  This defines a measure preserving system.
+\end{example}
+
+\begin{definition}
+  \label{definition_4_3}
+  Let $(X,\mathcal{A},\mu)$ be a probability space and $(X,T)$ be a measure preserving system. 
+  Such system is called ergodic if 
+  \begin{equation*}
+    \forall A\in\mathcal{A}, T(A) = A \alev \Rightarrow \mu(A)\in\{0,1\}.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  \label{remark_4_2}
+  Ergodicity can also be characterized as follows. 
+  \begin{equation*}
+    \forall f\in L^2(X), u_T(f)=f\alev\Rightarrow f\text{ is constant almost everywhere}.
+  \end{equation*}
+\end{remark}
+
+\begin{definition}
+  \label{defintion_4_4}
+  Let $V$ be a vectorspace of arbitrary dimension and $S\subseteq V$. The convex hull of $S$ is 
+  \begin{equation*}
+    \conv(S)\defeq\left\{\sum_{k=1}^n \lambda_k v_k\bigg{\vert}\forall k=1,\cdots,n \lambda_k \geq0,v_k\in S,\sum_{k=1}^n\lambda_k = 1\right\}.
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}
+  \label{theorem_4_1}
+  For a Hilbert space $H$, every non-empty closed convex subspace $C\subseteq X$ admits a unique element with the minimal norm.
+\end{theorem}
+
+\begin{theorem}[Von Neumann Mean Ergodic Theorem]
+  \label{theorem_4_2}
+  Let $(X,T)$ be an ergodic measure preserving system. Then 
+  \begin{equation*}
+    {\frac 1 N}\sum_{n=0}^N f\circ T^n\stackrel{N\to\infty}{\to}\mathbb{E}(f),
+  \end{equation*}
+  in $L^2(X)$. 
+\end{theorem}
+
+\begin{proof}
+  Set,
+  \begin{equation*}
+    C \def \overline{\conv\{f\circ T^n\sep n\in\bZ_{\geq0}\}}
+  \end{equation*}
+  As $L^2(X)$ is Hilbert, $C$ admits a unique element $g$ of minimal norm by Theorem \ref{theorem_4_1}.
+  By the closedness of $C$, we have $T^n(g)\in C$ for any $n\in\bN$. By Remark \ref{remark_4_1}, we have,
+  \begin{equation*}
+    \norm{g\circ T}_{L^2(X)} = \norm{g}_{L^2(X)}.
+  \end{equation*} 
+  Using the ergodicity of $T$ and Remark \ref{remark_4_2}, $g$ must be a constant almost everywhere.
+  Denote,
+  \begin{align*}
+    \mathbb{E}(C)\defeq &= \{\mathbb{E}(h)\sep h\in C\},\\
+    & \subseteq \overline{\conv\{\mathbb{E}(f\circ T^n)\sep n\in\bZ_{\geq0}\}},\\
+    & = \{\mathbb{E}(f)\}.
+  \end{align*}
+  Hence $g = \mathbb{E}(f)$ almost everywhere.
+\end{proof}
+
+%current Current
 
 % \section{Preliminaries}
 % \subsection{Measure Spaces}

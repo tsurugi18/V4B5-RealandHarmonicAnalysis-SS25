@@ -1,11 +1,11 @@
 # Fdb version 4
-["dvipdf"] 1791597420.2306 "RealandHarmonicAnalysis.dvi" "RealandHarmonicAnalysis.pdf" "RealandHarmonicAnalysis" 1791597420.41123 0
-  "RealandHarmonicAnalysis.dvi" 1791597420.20984 56668 8e0a184f1ee870d36c305cb4f5ec26e6 "latex"
+["dvipdf"] 1791809786.18914 "RealandHarmonicAnalysis.dvi" "RealandHarmonicAnalysis.pdf" "RealandHarmonicAnalysis" 1791809786.38813 0
+  "RealandHarmonicAnalysis.dvi" 1791809786.16606 72184 81b42d755a6b3e0f36d67214b34ee754 "latex"
   (generated)
   "RealandHarmonicAnalysis.pdf"
   (rewritten before read)
-["latex"] 1791597419.84129 "/Users/tsurugi/Desktop/Universities/UniBonn/Semester2/V4B5/LectureNotes/RealandHarmonicAnalysis.tex" "RealandHarmonicAnalysis.dvi" "RealandHarmonicAnalysis" 1791597420.41024 0
-  "/Users/tsurugi/Desktop/Universities/UniBonn/Semester2/V4B5/LectureNotes/RealandHarmonicAnalysis.tex" 1791597419.3522 107625 122da5cb2943eb84225a291894d3a7ab ""
+["latex"] 1791809785.75849 "/Users/tsurugi/Desktop/Universities/UniBonn/Semester2/V4B5/LectureNotes/RealandHarmonicAnalysis.tex" "RealandHarmonicAnalysis.dvi" "RealandHarmonicAnalysis" 1791809786.38711 0
+  "/Users/tsurugi/Desktop/Universities/UniBonn/Semester2/V4B5/LectureNotes/RealandHarmonicAnalysis.tex" 1791809785.53979 117545 a0445d9ce2f021a2e5ba77b0d612f9ec ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -30,6 +30,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmti7.tfm" 1136768653 1492 86331993fe614793f5e7e755835c31c5 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmti8.tfm" 1136768653 1504 1747189e0441d1c18f3ea56fafc1c480 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/doublestroke/dsrom8.tfm" 1136768653 452 dc44cdd7c88ff2b15557f125edfc277b ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm" 1229303445 688 37338d6ab346c2f1466b29e195316aa4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs5.tfm" 1229303445 684 3a51bd4fd9600428d5264cf25f04bb9a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs7.tfm" 1229303445 692 1b6510779f0f05e9cbf03e0f6c8361e6 ""
@@ -104,6 +105,8 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/base/article.cls" 1738182759 20144 63d8bacaf52e5abf4db3bc322373e1d4 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/base/size10.clo" 1738182759 8448 5cf247d4bd0c7d5d711bbbdf111fae2e ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/bbm-macros/bbm.sty" 1191314257 1644 1e0d54b051369c3f457872824cac219f ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/doublestroke/Udsrom.fd" 1137110062 211 101be7da01334f0b54b41fbe634f1ce4 ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/doublestroke/dsfont.sty" 1137110062 230 7bc61880b468bfd38aedc173be7c3486 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/extsizes/extsizes.sty" 1137110130 3240 8f6d502ca1d06cc8136c36580bba7618 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/extsizes/size8.clo" 1137110130 6172 5062a8faf7cb200267aa33f36102c207 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty" 1739048179 31715 19e60610b63819fe670dfa1cd84a4e94 ""
@@ -141,8 +144,8 @@
   "/usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf" 1739380943 42148 61becc7c670cd061bb319c643c27fdd4 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/latex.fmt" 1760893821 3345650 f2179b917b551c7214098855962de784 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "RealandHarmonicAnalysis.aux" 1791597420.20941 1450 b76b3da5a3d76b7d600f04a2d20613e2 "latex"
-  "RealandHarmonicAnalysis.tex" 1791597419.3522 107625 122da5cb2943eb84225a291894d3a7ab ""
+  "RealandHarmonicAnalysis.aux" 1791809786.16552 2464 d4b6b20a2a996175938ebae9481c78c8 "latex"
+  "RealandHarmonicAnalysis.tex" 1791809785.53979 117545 a0445d9ce2f021a2e5ba77b0d612f9ec ""
   (generated)
   "RealandHarmonicAnalysis.aux"
   "RealandHarmonicAnalysis.dvi"
